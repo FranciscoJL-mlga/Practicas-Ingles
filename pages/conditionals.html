@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conditionals | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Conditionals, wishes and regrets</span>
+        <h1>Conditionals, wishes and regrets</h1>
+        <p>Practica los cuatro tipos de condicional, los deseos y los arrepentimientos. Lee la teoría y elige un ejercicio.</p>
+        <div class="hero-theory-group">
+          <div class="theory-box">
+            <strong>Tipos de condicional</strong>
+            <table class="theory-table">
+              <thead><tr><th>Tipo</th><th>If-clause</th><th>Main clause</th><th>Uso</th></tr></thead>
+              <tbody>
+                <tr><td>Zero</td><td>present simple</td><td>present simple</td><td>Verdad general</td></tr>
+                <tr><td>1st</td><td>present simple</td><td>will + infinitive</td><td>Futuro posible</td></tr>
+                <tr><td>2nd</td><td>past simple</td><td>would + infinitive</td><td>Irreal presente</td></tr>
+                <tr><td>3rd</td><td>past perfect</td><td>would have + p.p.</td><td>Irreal pasado</td></tr>
+                <tr><td>Mixed</td><td>past perfect</td><td>would + infinitive</td><td>Cond. pasada, resultado presente</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Wishes and regrets</strong>
+            <table class="theory-table">
+              <thead><tr><th>Estructura</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>wish / if only + past simple</td><td>Deseo irreal presente</td><td>I <span class="change-mark">wish I knew</span></td></tr>
+                <tr><td>wish / if only + past perfect</td><td>Arrepentimiento pasado</td><td>I <span class="change-mark">wish I had studied</span></td></tr>
+                <tr><td>wish / if only + would</td><td>Queja o deseo de cambio</td><td>I <span class="change-mark">wish it would stop</span> raining</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Regla clave: la cláusula "if"</strong>
+            <div class="theory-note">
+              La cláusula <em>if</em> describe la <strong>condición</strong> (la causa). El inglés reserva <strong>will</strong> y <strong>would</strong> para la <strong>consecuencia</strong> (el resultado), nunca para la condición.
+            </div>
+            <table class="theory-table">
+              <thead><tr><th>Tipo</th><th>❌ Error frecuente</th><th>✅ Correcto</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>1st</td>
+                  <td>If it <span class="change-mark">will rain</span>…</td>
+                  <td>If it <span class="change-mark">rains</span>, I will stay home.</td>
+                </tr>
+                <tr>
+                  <td>2nd</td>
+                  <td>If I <span class="change-mark">would have</span> time…</td>
+                  <td>If I <span class="change-mark">had</span> time, I would help.</td>
+                </tr>
+                <tr>
+                  <td>3rd</td>
+                  <td>If she <span class="change-mark">would have studied</span>…</td>
+                  <td>If she <span class="change-mark">had studied</span>, she would have passed.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="theory-note" style="margin-top:10px;">
+              <strong>¿Por qué?</strong> En la cláusula <em>if</em> se describe un hecho o situación (real o imaginaria), no una intención. El <em>will/would</em> siempre marca el <strong>resultado</strong>, no la causa. Piénsalo así: <em>if</em> = situación → consecuencia = <em>will/would</em>.
+            </div>
+          </div>
+        </div>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 4 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también cuenta en la puntuación final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Responde una pregunta a la vez</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary hidden" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Condicionales — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Tipo</th><th>If-clause</th><th>Main clause</th></tr></thead><tbody><tr><td>Zero</td><td>present simple</td><td>present simple</td></tr><tr><td>1st</td><td>present simple</td><td>will + inf.</td></tr><tr><td>2nd</td><td>past simple</td><td>would + inf.</td></tr><tr><td>3rd</td><td>past perfect</td><td>would have + p.p.</td></tr></tbody></table><div class="theory-note">Nunca uses <strong>will</strong> ni <strong>would</strong> directamente en la cláusula <em>if</em> de los tipos 1, 2 y 3.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'If it ______ (rain) tomorrow, we will cancel the picnic.', answer: 'rains', explanation: '1er condicional: if + present simple → will + infinitivo.' },
+          { prompt: 'If I ______ (be) you, I would apologize.', answer: ['were', 'was'], explanation: '2º condicional: if + past simple (were es la forma formal estándar).' },
+          { prompt: 'If she ______ (study) harder, she would have passed.', answer: 'had studied', explanation: '3er condicional: if + past perfect → would have + participio.' },
+          { prompt: 'Water ______ (boil) if you heat it to 100°C.', answer: 'boils', explanation: 'Condicional cero: ambas cláusulas en present simple para verdades generales.' },
+          { prompt: 'If they ______ (have) more money, they would travel.', answer: 'had', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If you ______ (not / work) hard, you will fail.', answer: ['do not work', "don't work"], explanation: '1er condicional: if + present simple negativo.' },
+          { prompt: 'She would have called if she ______ (know).', answer: 'had known', explanation: '3er condicional: if + past perfect.' },
+          { prompt: 'If I ______ (win) the lottery, I would buy a house.', answer: 'won', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If you ______ (mix) blue and yellow, you get green.', answer: 'mix', explanation: 'Condicional cero: present simple en ambas cláusulas.' },
+          { prompt: 'If he ______ (arrive) on time, we can start the meeting.', answer: 'arrives', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'I would go if I ______ (not / be) so tired.', answer: ['were not', "weren't"], explanation: '2º condicional: if + past simple negativo.' },
+          { prompt: 'If they ______ (leave) earlier, they would have caught the train.', answer: 'had left', explanation: '3er condicional: if + past perfect.' },
+          { prompt: 'If you ______ (press) this button, the machine starts.', answer: 'press', explanation: 'Condicional cero: present simple para acciones y sus efectos.' },
+          { prompt: 'If she ______ (be) taller, she would play basketball professionally.', answer: ['were', 'was'], explanation: '2º condicional: if + past simple.' },
+          { prompt: 'We ______ (visit) you if we come to Madrid.', answer: 'will visit', explanation: '1er condicional: main clause con will + infinitivo.' },
+          { prompt: 'If he ______ (not / lie), she would have trusted him.', answer: ['had not lied', "hadn't lied"], explanation: '3er condicional: if + past perfect negativo.' },
+          { prompt: 'If I ______ (speak) French, I would apply for the job.', answer: 'spoke', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If you ______ (heat) metal, it expands.', answer: 'heat', explanation: 'Condicional cero: present simple para hechos científicos.' },
+          { prompt: 'They will be happy if you ______ (come) to the party.', answer: 'come', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'If I ______ (know) her address, I would write to her.', answer: 'knew', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'She ______ (not / fail) if she had revised properly.', answer: ['would not have failed', "wouldn't have failed"], explanation: '3er condicional: main clause con would have + participio negativo.' },
+          { prompt: 'If you ______ (not / water) plants, they die.', answer: ['do not water', "don't water"], explanation: 'Condicional cero: present simple negativo.' },
+          { prompt: 'He ______ (help) us if we ask him.', answer: 'will help', explanation: '1er condicional: main clause con will + infinitivo.' },
+          { prompt: 'If the weather ______ (be) better, we would go out.', answer: ['were', 'was'], explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If she ______ (take) the medicine, she would have recovered faster.', answer: 'had taken', explanation: '3er condicional: if + past perfect.' },
+          { prompt: 'If you ______ (freeze) water, it becomes ice.', answer: 'freeze', explanation: 'Condicional cero: present simple para verdades científicas.' },
+          { prompt: 'I ______ (call) you if I have any news.', answer: 'will call', explanation: '1er condicional: main clause con will + infinitivo.' },
+          { prompt: 'If he ______ (be) more careful, the accident would not have happened.', answer: 'had been', explanation: '3er condicional: if + past perfect.' },
+          { prompt: 'If I ______ (live) in Paris, I would visit the Eiffel Tower every day.', answer: 'lived', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'She would have got the job if she ______ (prepare) better.', answer: 'had prepared', explanation: '3er condicional: if + past perfect.' }
+        ]
+      },
+      gapWishes: {
+        label: 'Wishes and regrets — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Estructura</th><th>Uso</th></tr></thead><tbody><tr><td>wish / if only + past simple</td><td>Deseo irreal en el presente</td></tr><tr><td>wish / if only + past perfect</td><td>Arrepentimiento sobre el pasado</td></tr><tr><td>wish / if only + would</td><td>Queja o deseo de cambio externo</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'I wish I ______ (know) the answer.', answer: 'knew', explanation: 'wish + past simple para un deseo irreal en el presente.' },
+          { prompt: 'If only I ______ (study) harder last year!', answer: 'had studied', explanation: 'if only + past perfect para un arrepentimiento sobre el pasado.' },
+          { prompt: 'She wishes she ______ (can) speak Spanish.', answer: 'could', explanation: 'wish + could (forma pasada de can) para habilidad deseada en el presente.' },
+          { prompt: 'I wish it ______ (stop) raining.', answer: 'would stop', explanation: 'wish + would para una queja o deseo de cambio en la situación.' },
+          { prompt: 'He wishes he ______ (not / say) that to her.', answer: ['had not said', "hadn't said"], explanation: 'wish + past perfect negativo para un arrepentimiento.' },
+          { prompt: 'If only we ______ (have) more time right now.', answer: 'had', explanation: 'if only + past simple para un deseo irreal en el presente.' },
+          { prompt: 'I wish I ______ (be) taller.', answer: ['were', 'was'], explanation: 'wish + past simple (were es la forma estándar, was también se acepta).' },
+          { prompt: 'She wishes she ______ (go) to university when she was young.', answer: 'had gone', explanation: 'wish + past perfect para un arrepentimiento sobre el pasado.' },
+          { prompt: 'If only he ______ (listen) to my advice back then!', answer: 'had listened', explanation: 'if only + past perfect para un arrepentimiento.' },
+          { prompt: 'I wish people ______ (not / drop) litter in the street.', answer: ['would not drop', "wouldn't drop"], explanation: 'wish + would not para una queja sobre el comportamiento ajeno.' },
+          { prompt: 'She wishes she ______ (live) in a bigger house.', answer: 'lived', explanation: 'wish + past simple para un deseo irreal en el presente.' },
+          { prompt: 'If only I ______ (not / spend) all my money last night!', answer: ['had not spent', "hadn't spent"], explanation: 'if only + past perfect negativo para un arrepentimiento.' },
+          { prompt: 'He wishes he ______ (be) a famous musician.', answer: ['were', 'was'], explanation: 'wish + past simple para un deseo irreal en el presente.' },
+          { prompt: 'I wish the neighbours ______ (be) quieter.', answer: 'would be', explanation: 'wish + would para una queja o petición de cambio en el presente.' },
+          { prompt: 'If only I ______ (take) that opportunity when I had the chance!', answer: 'had taken', explanation: 'if only + past perfect para un arrepentimiento.' },
+          { prompt: 'She wishes she ______ (not / marry) him.', answer: ['had not married', "hadn't married"], explanation: 'wish + past perfect negativo para un arrepentimiento.' },
+          { prompt: 'I wish I ______ (have) a pet.', answer: 'had', explanation: 'wish + past simple para un deseo irreal en el presente.' },
+          { prompt: 'If only she ______ (pass) the exam last month.', answer: 'had passed', explanation: 'if only + past perfect para un arrepentimiento sobre el pasado.' },
+          { prompt: 'I wish I ______ (can) fly like a bird.', answer: 'could', explanation: 'wish + could para una habilidad irreal en el presente.' },
+          { prompt: 'He wishes he ______ (not / quit) his job last year.', answer: ['had not quit', "hadn't quit"], explanation: 'wish + past perfect negativo para un arrepentimiento.' },
+          { prompt: 'I wish the train ______ (come) on time.', answer: 'would come', explanation: 'wish + would para una queja sobre una situación que queremos que cambie.' },
+          { prompt: 'If only I ______ (remember) her birthday yesterday!', answer: 'had remembered', explanation: 'if only + past perfect para un arrepentimiento.' },
+          { prompt: 'She wishes she ______ (be) more confident in interviews.', answer: ['were', 'was'], explanation: 'wish + past simple para un deseo irreal en el presente.' },
+          { prompt: 'I wish you ______ (not / be) so noisy all the time.', answer: ['would not be', "wouldn't be"], explanation: 'wish + would not para una queja dirigida a alguien.' },
+          { prompt: 'If only we ______ (buy) that house when we had the chance.', answer: 'had bought', explanation: 'if only + past perfect para un arrepentimiento.' },
+          { prompt: 'He wishes he ______ (can) travel more often.', answer: 'could', explanation: 'wish + could para una habilidad o posibilidad deseada en el presente.' },
+          { prompt: 'I wish I ______ (not / eat) so much at dinner yesterday.', answer: ['had not eaten', "hadn't eaten"], explanation: 'wish + past perfect negativo para un arrepentimiento.' },
+          { prompt: 'If only she ______ (tell) me the truth from the beginning!', answer: 'had told', explanation: 'if only + past perfect para un arrepentimiento.' },
+          { prompt: 'I wish things ______ (be) different.', answer: 'were', explanation: 'wish + past simple para un deseo irreal en el presente (things es plural → were).' },
+          { prompt: 'She wishes she ______ (choose) a different career path.', answer: 'had chosen', explanation: 'wish + past perfect para un arrepentimiento sobre el pasado.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<div class="theory-note">1er: <strong>if + present simple, will + inf.</strong> · 2º: <strong>if + past simple, would + inf.</strong> · 3º: <strong>if + past perfect, would have + p.p.</strong> · Wishes: <strong>past simple</strong> (presente irreal), <strong>past perfect</strong> (arrepentimiento), <strong>would</strong> (queja).</div>',
+        type: 'choice',
+        items: [
+          { prompt: 'If it _____ tomorrow, we will stay at home.', options: ['rains', 'will rain', 'rained'], answer: 'a', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'Water _____ if you heat it to 100 degrees.', options: ['would boil', 'will boil', 'boils'], answer: 'c', explanation: 'Condicional cero: present simple para verdades generales.' },
+          { prompt: 'I wish I _____ speak Italian.', options: ['can', 'could', 'will'], answer: 'b', explanation: 'wish + could (past modal) para habilidad irreal en el presente.' },
+          { prompt: 'If you _____ hard, you will succeed.', options: ['would work', 'worked', 'work'], answer: 'c', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'I wish I _____ more money right now.', options: ['have', 'had', 'will have'], answer: 'b', explanation: 'wish + past simple para deseo irreal en el presente.' },
+          { prompt: 'If she had left earlier, she _____ the bus.', options: ['catches', 'would catch', 'would have caught'], answer: 'c', explanation: '3er condicional: would have + participio.' },
+          { prompt: 'If only I _____ that yesterday!', options: ['do not say', 'did not say', 'had not said'], answer: 'c', explanation: 'if only + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'If it _____ sunny tomorrow, we will go to the beach.', options: ['will be', 'is', 'was'], answer: 'b', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'He wishes he _____ to university when he was young.', options: ['goes', 'went', 'had gone'], answer: 'c', explanation: 'wish + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'If I _____ the answer, I would tell you right now.', options: ['know', 'knew', 'had known'], answer: 'b', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'I wish it _____ raining!', options: ['stops', 'stopped', 'would stop'], answer: 'c', explanation: 'wish + would para una queja o deseo de cambio externo.' },
+          { prompt: 'If you _____ water, it boils.', options: ['heated', 'heat', 'will heat'], answer: 'b', explanation: 'Condicional cero: present simple.' },
+          { prompt: 'If she _____ a doctor, she could help more people.', options: ['is', 'were', 'had been'], answer: 'b', explanation: '2º condicional: if + past simple (were es la forma estándar).' },
+          { prompt: 'I wish I _____ earlier this morning.', options: ['wake up', 'woke up', 'had woken up'], answer: 'c', explanation: 'wish + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'If only she _____ me the truth!', options: ['tells', 'told', 'had told'], answer: 'c', explanation: 'if only + past perfect para arrepentimiento.' },
+          { prompt: 'If he _____ more, he would be healthier.', options: ['exercises', 'exercised', 'had exercised'], answer: 'b', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If you drop a glass, it _____.', options: ['breaks', 'would break', 'will break'], answer: 'a', explanation: 'Condicional cero: present simple para consecuencias naturales.' },
+          { prompt: 'She would have come if she _____ about the party.', options: ['knows', 'knew', 'had known'], answer: 'c', explanation: '3er condicional: if + past perfect.' },
+          { prompt: 'I wish I _____ the piano.', options: ['play', 'can play', 'could play'], answer: 'c', explanation: 'wish + could play para habilidad irreal en el presente.' },
+          { prompt: 'If only I _____ that mistake!', options: ['do not make', 'did not make', 'had not made'], answer: 'c', explanation: 'if only + past perfect para arrepentimiento.' },
+          { prompt: 'If it _____ cold next week, we will cancel the trip.', options: ['is', 'was', 'will be'], answer: 'a', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'He wishes he _____ harder at school.', options: ['works', 'worked', 'had worked'], answer: 'c', explanation: 'wish + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'If I had seen her, I _____ hello.', options: ['say', 'would say', 'would have said'], answer: 'c', explanation: '3er condicional: would have + participio.' },
+          { prompt: 'I wish you _____ talking so loudly.', options: ['stop', 'stopped', 'would stop'], answer: 'c', explanation: 'wish + would para queja dirigida a alguien.' },
+          { prompt: 'They _____ the match if they had trained harder.', options: ['win', 'would win', 'would have won'], answer: 'c', explanation: '3er condicional: would have + participio.' },
+          { prompt: 'If only I _____ more time right now!', options: ['have', 'had', 'will have'], answer: 'b', explanation: 'if only + past simple para deseo irreal en el presente.' },
+          { prompt: 'If you press that button, the alarm _____.', options: ['rings', 'would ring', 'rang'], answer: 'a', explanation: 'Condicional cero o 1er: present simple para consecuencias directas.' },
+          { prompt: 'She wishes she _____ her keys last night.', options: ['does not lose', 'did not lose', 'had not lost'], answer: 'c', explanation: 'wish + past perfect negativo para arrepentimiento.' },
+          { prompt: 'If I _____ him in the street, I would ask for his advice.', options: ['see', 'saw', 'had seen'], answer: 'b', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'If only I _____ to my parents when I was young!', options: ['listen', 'listened', 'had listened'], answer: 'c', explanation: 'if only + past perfect para arrepentimiento sobre el pasado.' }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<div class="theory-note">Errores típicos: <strong>will</strong> en la cláusula <em>if</em>, mezclar tipos, <strong>would</strong> en la cláusula <em>if</em>, usar present simple tras <em>wish</em> para el presente, o past simple tras <em>wish</em> para el pasado.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'If I will see him, I will tell him.', answer: 'If I see him, I will tell him.', explanation: '1er condicional: la cláusula if usa present simple, nunca will.' },
+          { prompt: 'I wish I can speak French.', answer: 'I wish I could speak French.', explanation: 'Tras wish, el presente irreal usa could (pasado de can), no can.' },
+          { prompt: 'If she would study harder, she would pass.', answer: 'If she studied harder, she would pass.', explanation: '2º condicional: la cláusula if usa past simple, nunca would.' },
+          { prompt: 'If only I did not say that yesterday!', answer: 'If only I had not said that yesterday!', explanation: 'Arrepentimiento sobre el pasado: if only + past perfect.' },
+          { prompt: 'If you heat water, it would boil.', answer: 'If you heat water, it boils.', explanation: 'Condicional cero: ambas cláusulas usan present simple.' },
+          { prompt: 'He would come if he will have time.', answer: 'He would come if he had time.', explanation: '2º condicional: la cláusula if usa past simple, no will.' },
+          { prompt: 'If only I have more money!', answer: 'If only I had more money!', explanation: 'if only + past simple para deseo irreal en el presente.' },
+          { prompt: 'If she had studied, she will have passed.', answer: 'If she had studied, she would have passed.', explanation: '3er condicional: la main clause usa would have + participio, no will have.' },
+          { prompt: 'I wish the bus comes on time.', answer: 'I wish the bus would come on time.', explanation: 'Queja sobre una situación que se quiere cambiar: wish + would.' },
+          { prompt: 'If I knew the answer, I would told you.', answer: 'If I knew the answer, I would tell you.', explanation: 'Tras would, el verbo va en infinitivo sin to: would tell, no would told.' },
+          { prompt: 'If I would be rich, I would travel the world.', answer: 'If I were rich, I would travel the world.', explanation: '2º condicional: la cláusula if usa past simple (were), no would.' },
+          { prompt: 'She wishes she did not accept that job.', answer: 'She wishes she had not accepted that job.', explanation: 'Arrepentimiento sobre el pasado: wish + past perfect negativo.' },
+          { prompt: 'If only they will stop making noise!', answer: 'If only they would stop making noise!', explanation: 'Queja sobre el comportamiento ajeno: if only + would.' },
+          { prompt: 'If you had asked me, I will help you.', answer: 'If you had asked me, I would have helped you.', explanation: '3er condicional: la main clause usa would have + participio.' },
+          { prompt: 'I wish I do not have to work tomorrow.', answer: 'I wish I did not have to work tomorrow.', explanation: 'wish + past simple para deseo irreal en el presente.' },
+          { prompt: 'If she studies, she would pass.', answer: 'If she studied, she would pass.', explanation: '2º condicional: la cláusula if usa past simple (studied), no present simple.' },
+          { prompt: 'If I was you, I would apologize.', answer: 'If I were you, I would apologize.', explanation: '2º condicional: la forma estándar con I es were, no was.' },
+          { prompt: 'He wishes he will have a car.', answer: 'He wishes he had a car.', explanation: 'wish + past simple para deseo irreal en el presente, nunca will.' },
+          { prompt: 'If only I bought that house when I had the chance!', answer: 'If only I had bought that house when I had the chance!', explanation: 'Arrepentimiento sobre el pasado: if only + past perfect.' },
+          { prompt: 'If it rains, we would stay inside.', answer: 'If it rained, we would stay inside.', explanation: '2º condicional: la cláusula if usa past simple (rained), no present simple.' },
+          { prompt: 'I wish I went to the party yesterday.', answer: 'I wish I had gone to the party yesterday.', explanation: 'Arrepentimiento sobre el pasado: wish + past perfect.' },
+          { prompt: 'If only he does not make that mistake!', answer: 'If only he had not made that mistake!', explanation: 'Arrepentimiento sobre el pasado: if only + past perfect.' },
+          { prompt: 'She would have stayed if she known the truth.', answer: 'She would have stayed if she had known the truth.', explanation: '3er condicional: la cláusula if usa had + participio (had known).' },
+          { prompt: 'She wishes she will travel more.', answer: 'She wishes she could travel more.', explanation: 'Deseo irreal en el presente: wish + could, nunca will.' },
+          { prompt: 'If I had more time, I would helped you.', answer: 'If I had more time, I would help you.', explanation: '2º condicional: tras would el verbo va en infinitivo: would help.' },
+          { prompt: 'If only it does not rain tomorrow!', answer: 'If only it did not rain tomorrow!', explanation: 'if only + past simple para un deseo sobre el futuro.' },
+          { prompt: 'If he will study, he will pass.', answer: 'If he studies, he will pass.', explanation: '1er condicional: la cláusula if usa present simple, nunca will.' },
+          { prompt: 'I wish I would be taller.', answer: 'I wish I were taller.', explanation: 'Deseo sobre uno mismo en el presente: wish + past simple (were), no would.' },
+          { prompt: 'If they had worked harder, they win.', answer: 'If they had worked harder, they would have won.', explanation: '3er condicional: la main clause usa would have + participio.' },
+          { prompt: 'If only I listen to my parents when I was young!', answer: 'If only I had listened to my parents when I was young!', explanation: 'Arrepentimiento sobre el pasado: if only + past perfect.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateStatus() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      document.getElementById('timer').textContent = formatTime(elapsed);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent =
+        `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/[''""".,?!¡¿:;()\-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+
+      if (!item) return completeSection();
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(p);
+
+      if (section.theory) {
+        const t = document.createElement('div');
+        t.className = 'theory-box';
+        t.innerHTML = `<strong>Pista</strong>${section.theory}`;
+        questionArea.appendChild(t);
+      }
+
+      if (section.type === 'choice') {
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const id = `opt-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = id;
+          radio.className = 'choice-input';
+          const span = document.createElement('span');
+          span.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+          label.appendChild(radio);
+          label.appendChild(span);
+          optionsDiv.appendChild(label);
+        });
+        questionArea.appendChild(optionsDiv);
+      } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'exercise-input';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+      document.getElementById('next-button').textContent = isLast ? 'Comprobar y terminar' : 'Comprobar y siguiente';
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = input ? normalizeText(input.value) : '';
+        }
+
+        const answers = Array.isArray(item.answer) ? item.answer : [item.answer];
+        let correct = false;
+        if (section.type === 'choice') {
+          correct = answers.includes(userAnswer);
+        } else {
+          correct = answers.some(a => normalizeText(a) === userAnswer);
+        }
+
+        const explanation = item.explanation || '';
+        let correctDisplay;
+        if (section.type === 'choice') {
+          correctDisplay = answers.map(a => `${a}) ${item.options[a.charCodeAt(0) - 97]}`).join(' / ');
+        } else {
+          correctDisplay = answers.join(' / ');
+        }
+
+        if (correct) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          const plural = answers.length > 1 ? 's válidas' : ' correcta';
+          feedback.textContent = `Incorrecto. Respuesta${plural}: "${correctDisplay}". -5 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLast ? 'Finalizar sección' : 'Siguiente pregunta';
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLast) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      const sectionLen = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLen * 3 - elapsed * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+
+      const summary = document.getElementById('section-summary');
+      summary.textContent = `Sección finalizada. Puntos: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsed)}. Bonificación rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>

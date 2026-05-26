@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relative clauses | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Relative clauses</span>
+        <h1>Relative clauses: teoría y ejercicios</h1>
+        <p>Practica pronombres relativos, cláusulas definitorias y no definitorias. Lee la teoría y elige un ejercicio.</p>
+        <div class="hero-theory-group">
+          <div class="theory-box">
+            <strong>Pronombres relativos</strong>
+            <table class="theory-table">
+              <thead><tr><th>Pronombre</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>who</td><td>Personas (sujeto)</td><td>"The teacher <span class="change-mark">who</span> helped me was kind"</td></tr>
+                <tr><td>whom</td><td>Personas (objeto, formal)</td><td>"The man <span class="change-mark">whom</span> I met..."</td></tr>
+                <tr><td>which</td><td>Objetos/animales</td><td>"The book <span class="change-mark">which</span> I bought..."</td></tr>
+                <tr><td>that</td><td>Personas/objetos (informal, defining)</td><td>"The car <span class="change-mark">that</span> I saw..."</td></tr>
+                <tr><td>whose</td><td>Pertenencia</td><td>"The student <span class="change-mark">whose</span> phone rang..."</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Defining vs Non-defining</strong>
+            <table class="theory-table">
+              <thead><tr><th>Tipo</th><th>Características</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>Defining</td><td>Identifica al antecedente; no lleva comas; 'that' y 'who' pueden usarse</td><td>"People <span class="change-mark">who</span> smoke should quit"</td></tr>
+                <tr><td>Non-defining</td><td>Aporta info extra; se separa por comas; 'which' o 'who'</td><td>"My brother, <span class="change-mark">who</span> lives in Madrid, is a doctor"</td></tr>
+                <tr><td>Omisión</td><td>En defining clauses el pronombre puede omitirse si es objeto</td><td>"The book (that) I read was good"</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 3 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también cuenta en la puntuación final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Responde una pregunta a la vez</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary hidden" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Completar: elegir pronombre',
+        theory: '<div class="theory-note">Recuerda: usa <strong>who</strong> para personas (sujeto), <strong>which</strong> para objetos/lugares, <strong>that</strong> en defining clauses, <strong>whose</strong> para pertenencia y <strong>when/where/why</strong> para tiempo, lugar y razón.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'The woman _____ lives next door is a teacher.', answer: ['who', 'that'], explanation: 'Persona sujeto en defining clause → who o that.' },
+          { prompt: 'The book _____ I bought was expensive.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The song _____ made me cry is by Adele.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'He is the artist _____ paintings we saw.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'This is the table _____ was in the old house.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'People _____ arrive late will not be admitted.', answer: ['who', 'that'], explanation: 'Personas en defining clause → who o that.' },
+          { prompt: 'The town _____ we visited had beautiful parks.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'I met a woman _____ son is a pilot.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The hotel _____ we stayed was on the beach.', answer: 'where', explanation: 'Lugar donde ocurre la acción → where ("we stayed at the hotel").' },
+          { prompt: 'Do you remember the day _____ we met?', answer: 'when', explanation: 'Tiempo → when (único válido aquí).' },
+          { prompt: 'The student _____ we chose to lead is very responsible.', answer: ['whom', 'who', 'that'], explanation: 'Objeto de la cláusula → whom (formal), who (informal) o that.' },
+          { prompt: 'The road _____ leads to the lake is narrow.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'She invited the friends _____ she grew up with.', answer: ['who', 'whom', 'that'], explanation: 'Objeto de la cláusula → who, whom (formal) o that.' },
+          { prompt: 'I remember the summer _____ we travelled to Greece.', answer: 'when', explanation: 'Tiempo → when (único válido aquí).' },
+          { prompt: 'There is the house _____ roof needs repair.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The doctor _____ treated me was very kind.', answer: ['who', 'that'], explanation: 'Persona sujeto en defining clause → who o that.' },
+          { prompt: 'The poem _____ won the prize was touching.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The shop _____ sells antiques closed yesterday.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'I will never forget the moment _____ she left.', answer: 'when', explanation: 'Tiempo → when (único válido aquí).' },
+          { prompt: 'The students _____ exams were postponed are relieved.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The film _____ we watched last night was great.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'This is the author _____ books I always read.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The man _____ car was stolen reported it to the police.', answer: 'whose', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'She is the teacher _____ teaches English.', answer: ['who', 'that'], explanation: 'Persona sujeto en defining clause → who o that.' },
+          { prompt: 'The island _____ we explored had a lighthouse.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'I remember the year _____ my son was born.', answer: 'when', explanation: 'Tiempo → when (único válido aquí).' },
+          { prompt: 'The case _____ he mentioned is still open.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: "The friend _____ I called didn't answer.", answer: ['whom', 'who', 'that'], explanation: 'Objeto de la cláusula → whom (formal), who (informal) o that.' },
+          { prompt: 'She collects stamps _____ are rare.', answer: ['that', 'which'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The cafe _____ serves the best coffee is near here.', answer: ['which', 'that'], explanation: 'Objeto en defining clause → which o that.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<div class="theory-note">Fíjate si la cláusula identifica al sustantivo (defining) o añade información extra (non-defining). En non-defining siempre hay comas y no se usa <strong>that</strong>.</div>',
+        type: 'choice',
+        items: [
+          { prompt: 'She is the person _____ helped me yesterday.', options: ['who', 'which', 'that'], answer: ['a', 'c'], explanation: 'Persona sujeto en defining clause → who o that.' },
+          { prompt: 'The car _____ he bought is blue.', options: ['who', 'which', 'whose'], answer: 'b', explanation: 'Objeto → which (único válido entre las opciones).' },
+          { prompt: 'My cousin, _____ lives in London, is visiting.', options: ['who', 'that', 'which'], answer: 'a', explanation: 'Non-defining → who obligatorio (no se usa that con comas).' },
+          { prompt: 'The students _____ homework is missing must stay.', options: ['that', 'whose', 'which'], answer: 'b', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'I met a writer _____ won many awards.', options: ['who', 'which', 'where'], answer: 'a', explanation: 'Persona sujeto → who (único válido entre las opciones).' },
+          { prompt: 'This is the museum _____ we saw the exhibition.', options: ['who', 'where', 'that'], answer: 'b', explanation: 'Lugar donde sucede la acción → where.' },
+          { prompt: 'The day _____ we met was unforgettable.', options: ['when', 'that', 'which'], answer: ['a', 'b'], explanation: 'Tiempo → when (más preciso) o that (también válido en defining).' },
+          { prompt: 'He joined the team _____ needed a goalkeeper.', options: ['which', 'who', 'where'], answer: 'a', explanation: 'Grupo/objeto → which (único válido entre las opciones).' },
+          { prompt: 'Find the sentence _____ contains an error.', options: ['that', 'which', 'who'], answer: ['a', 'b'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The house, _____ windows are broken, needs repair.', options: ['whose', 'that', 'who'], answer: 'a', explanation: 'Non-defining pertenencia → whose (no se usa that con comas).' },
+          { prompt: 'The teacher _____ students complained retired.', options: ['who', 'that', 'whose'], answer: 'c', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'I remember the restaurant _____ we ate together.', options: ['where', 'which', 'who'], answer: 'a', explanation: 'Lugar donde sucede la acción → where.' },
+          { prompt: 'Choose the correct clause: The man _____ car was red.', options: ['which', 'whose', 'who'], answer: 'b', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'This is the device _____ makes my work easier.', options: ['that', 'which', 'who'], answer: ['a', 'b'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The time _____ we left was very early.', options: ['when', 'that', 'which'], answer: ['a', 'b'], explanation: 'Tiempo → when (más preciso) o that (también válido).' },
+          { prompt: 'The player _____ scored the goal smiled.', options: ['who', 'which', 'that'], answer: ['a', 'c'], explanation: 'Persona sujeto en defining clause → who o that.' },
+          { prompt: 'The book _____ I recommended is sold out.', options: ['who', 'which', 'that'], answer: ['b', 'c'], explanation: 'Objeto en defining clause → which o that.' },
+          { prompt: 'The town _____ streets are very narrow.', options: ['where', 'whose', 'which'], answer: 'b', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The letter _____ arrived this morning was from my aunt.', options: ['which', 'who', 'where'], answer: 'a', explanation: 'Objeto → which (único válido entre las opciones).' },
+          { prompt: 'The period _____ we studied was very intense.', options: ['when', 'which', 'that'], answer: ['a', 'c'], explanation: 'Tiempo → when (más preciso) o that (también válido).' },
+          { prompt: 'The team _____ coach left reorganized quickly.', options: ['whose', 'who', 'which'], answer: 'a', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The dress _____ she bought was expensive.', options: ['that', 'which', 'who'], answer: ['a', 'b'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The city _____ I grew up has changed a lot.', options: ['where', 'which', 'that'], answer: 'a', explanation: 'Lugar donde sucede la acción → where.' },
+          { prompt: 'The author _____ novel won the prize is unknown.', options: ['whose', 'who', 'which'], answer: 'a', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'He told the story _____ made everyone laugh.', options: ['that', 'which', 'who'], answer: ['a', 'b'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The moment _____ I realized it was special.', options: ['when', 'which', 'that'], answer: ['a', 'c'], explanation: 'Tiempo → when (más preciso) o that (también válido).' },
+          { prompt: 'The orchestra _____ conductor is famous performed last night.', options: ['whose', 'which', 'who'], answer: 'a', explanation: 'Pertenencia → whose (único válido).' },
+          { prompt: 'The place _____ he described seemed magical.', options: ['which', 'where', 'that'], answer: ['a', 'c'], explanation: 'El lugar es el objeto del verbo "describe" → which o that (where sería incorrecto aquí).' },
+          { prompt: 'The device _____ I use daily is slow.', options: ['that', 'which', 'who'], answer: ['a', 'b'], explanation: 'Objeto en defining clause → that o which.' },
+          { prompt: 'The reason _____ she quit her job is still unclear.', options: ['why', 'when', 'which'], answer: 'a', explanation: 'Razón → why (único válido).' }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<div class="theory-note">En non-defining clauses no se usa <strong>that</strong> y siempre se separan por comas. Comprueba el pronombre relativo, las comas y la concordancia verbal.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'My aunt who lives in Madrid is a nurse.', answer: 'My aunt, who lives in Madrid, is a nurse.', explanation: 'Non-defining → comas necesarias.' },
+          { prompt: 'The writer who books I like is famous.', answer: 'The writer whose books I like is famous.', explanation: 'Pertenencia → whose.' },
+          { prompt: 'The car which was red belongs to Anna.', answer: 'The car, which was red, belongs to Anna.', explanation: 'Non-defining → añadir comas.' },
+          { prompt: 'The city where I was born, is big.', answer: 'The city where I was born is big.', explanation: 'No hay coma antes de cláusula defining.' },
+          { prompt: 'That teacher, who students like, won an award.', answer: 'That teacher, whom students like, won an award.', explanation: 'Objeto → whom (formal).' },
+          { prompt: 'The time when we arrived, was late.', answer: 'The time when we arrived was late.', explanation: 'No coma en defining clause.' },
+          { prompt: 'A film which made me cry was shown.', answer: ['A film that made me cry was shown.', 'A film which made me cry was shown.'], explanation: 'En defining clauses that es preferido en inglés informal, pero which también se acepta (especialmente en inglés británico).' },
+          { prompt: 'My brother who lives in Paris is a doctor.', answer: 'My brother, who lives in Paris, is a doctor.', explanation: 'Non-defining → comas.' },
+          { prompt: 'He is the singer, who won the prize.', answer: 'He is the singer who won the prize.', explanation: 'No coma si la cláusula es defining.' },
+          { prompt: 'The students that homework was lost complained.', answer: 'The students whose homework was lost complained.', explanation: 'Pertenencia → whose.' },
+          { prompt: 'The museum, which exhibits were modern, opened.', answer: 'The museum, whose exhibits were modern, opened.', explanation: 'Pertenencia → whose (con comas non-defining).' },
+          { prompt: 'She visited the town which she grew up.', answer: 'She visited the town where she grew up.', explanation: 'Lugar → where.' },
+          { prompt: 'A writer who books I love visited our school.', answer: 'A writer whose books I love visited our school.', explanation: 'Pertenencia → whose.' },
+          { prompt: 'The day which we met was sunny.', answer: 'The day when we met was sunny.', explanation: 'Tiempo → when.' },
+          { prompt: 'The car, that he bought, is new.', answer: 'The car that he bought is new.', explanation: 'No comas en defining clause y that en lugar de which.' },
+          { prompt: 'The author which novel I read is unknown.', answer: 'The author whose novel I read is unknown.', explanation: 'Pertenencia → whose.' },
+          { prompt: 'The place where we met, was crowded.', answer: 'The place where we met was crowded.', explanation: 'No coma en defining clause.' },
+          { prompt: 'The boy who I saw in the park cried.', answer: ['The boy whom I saw in the park cried.', 'The boy who I saw in the park cried.'], explanation: 'Objeto → whom es la forma formal correcta; who también se acepta en inglés informal moderno.' },
+          { prompt: 'The tool which I use daily is broken.', answer: ['The tool that I use daily is broken.', 'The tool which I use daily is broken.'], explanation: 'Objeto en defining clause → that es preferido, pero which también es válido.' },
+          { prompt: 'Her sister who lives abroad is visiting.', answer: 'Her sister, who lives abroad, is visiting.', explanation: 'Non-defining → comas.' },
+          { prompt: 'The team whose coach left, improved a lot.', answer: 'The team whose coach left improved a lot.', explanation: 'No coma en defining clause.' },
+          { prompt: 'The moment when, we realized it was too late.', answer: 'The moment when we realized it was too late.', explanation: 'Eliminar coma errónea tras when.' },
+          { prompt: 'The student who answers the question won.', answer: 'The student who answered the question won.', explanation: 'Concordancia verbal: pasado → answered.' },
+          { prompt: 'My friend, whose dog barks all night, moved away.', answer: 'My friend, whose dog barks all night, moved away.', explanation: 'Correcto: non-defining con whose y comas.' },
+          { prompt: 'The candidate who, we interviewed is very qualified.', answer: ['The candidate whom we interviewed is very qualified.', 'The candidate who we interviewed is very qualified.'], explanation: 'Eliminar la coma errónea. Objeto → whom (formal) o who (informal).' },
+          { prompt: 'The house whose windows are blue needs paint.', answer: 'The house whose windows are blue needs paint.', explanation: 'Correcto: whose indica pertenencia.' },
+          { prompt: 'He is the man whom I saw him yesterday.', answer: 'He is the man whom I saw yesterday.', explanation: 'Eliminar "him" redundante: whom ya actúa como objeto.' },
+          { prompt: 'The city which I was born is very old.', answer: 'The city where I was born is very old.', explanation: 'Lugar → where, no which.' },
+          { prompt: 'She is a doctor who her patients love her.', answer: 'She is a doctor whom her patients love.', explanation: 'Objeto → whom; eliminar "her" final redundante.' },
+          { prompt: 'The reason which she left was personal.', answer: 'The reason why she left was personal.', explanation: 'Razón → why, no which.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateStatus() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      document.getElementById('timer').textContent = formatTime(elapsed);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent =
+        `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/[''""".,?¡!¿:;()\-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+
+      if (!item) return completeSection();
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(p);
+
+      if (section.theory) {
+        const t = document.createElement('div');
+        t.className = 'theory-box';
+        t.innerHTML = `<strong>Pista</strong>${section.theory}`;
+        questionArea.appendChild(t);
+      }
+
+      if (section.type === 'choice') {
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const id = `opt-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = id;
+          radio.className = 'choice-input';
+          const span = document.createElement('span');
+          span.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+          label.appendChild(radio);
+          label.appendChild(span);
+          optionsDiv.appendChild(label);
+        });
+        questionArea.appendChild(optionsDiv);
+      } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'exercise-input';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+      document.getElementById('next-button').textContent = isLast ? 'Comprobar y terminar' : 'Comprobar y siguiente';
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = input ? normalizeText(input.value) : '';
+        }
+
+        const answers = Array.isArray(item.answer) ? item.answer : [item.answer];
+        let correct = false;
+        if (section.type === 'choice') {
+          correct = answers.includes(userAnswer);
+        } else {
+          correct = answers.some(a => normalizeText(a) === userAnswer);
+        }
+
+        const explanation = item.explanation || '';
+        let correctDisplay;
+        if (section.type === 'choice') {
+          correctDisplay = answers.map(a => `${a}) ${item.options[a.charCodeAt(0) - 97]}`).join(' / ');
+        } else {
+          correctDisplay = answers.join(' / ');
+        }
+
+        if (correct) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          const plural = answers.length > 1 ? 's válidas' : ' correcta';
+          feedback.textContent = `Incorrecto. Respuesta${plural}: "${correctDisplay}". -5 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLast ? 'Finalizar sección' : 'Siguiente pregunta';
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLast) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      const sectionLen = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLen * 3 - elapsed * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+
+      const summary = document.getElementById('section-summary');
+      summary.textContent = `Sección finalizada. Puntos: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsed)}. Bonificación rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>

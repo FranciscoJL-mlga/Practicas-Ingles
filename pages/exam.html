@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modo examen | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Modo examen</span>
+        <h1>Examen global de gramática</h1>
+        <p>30 preguntas de opción múltiple (5 por tema), sin pistas de teoría. Al terminar verás tu puntuación desglosada por tema.</p>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Instrucciones</span>
+          <h2>¿Listo para el examen?</h2>
+        </div>
+      </div>
+      <ul class="exam-info-list">
+        <li>30 preguntas de opción múltiple</li>
+        <li>5 preguntas de cada uno de los 6 temas gramaticales</li>
+        <li>Las preguntas se eligen y ordenan de forma aleatoria</li>
+        <li>No hay pistas de teoría durante el examen</li>
+        <li>Al finalizar verás el porcentaje de aciertos por tema</li>
+      </ul>
+      <p id="exam-start-best" class="exam-start-best"></p>
+      <div style="text-align:center;">
+        <button class="submit-button" id="start-exam-btn" type="button">Comenzar examen</button>
+      </div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="exam-progress">
+        <span class="exam-progress-label" id="progress-label">1 / 30</span>
+        <div class="exam-progress-bar-wrap">
+          <div class="exam-progress-bar-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div id="topic-badge-area"></div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+    </section>
+
+    <section id="results-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Resultados</span>
+          <h2>Examen completado</h2>
+        </div>
+      </div>
+      <div id="results-content" style="max-width:580px;margin:0 auto;"></div>
+      <div class="exercise-actions" style="margin-top:24px;">
+        <button class="submit-button" id="new-exam-btn" type="button">Nuevo examen</button>
+        <a class="submit-button secondary" href="../index.html" style="display:inline-block;text-align:center;text-decoration:none;">Volver al menú</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const POOLS = [
+      {
+        name: 'Reported Speech',
+        colorClass: 'topic-0',
+        questions: [
+          { prompt: 'He said: "I have lost my keys." Reported: He said that he ____ lost his keys.', options: ['has', 'had', 'have'], answer: 'b', explanation: 'Present perfect → past perfect en estilo indirecto.' },
+          { prompt: 'She said: "I am visiting my aunt." Reported: She said that she ____ visiting her aunt.', options: ['is', 'was', 'will'], answer: 'b', explanation: 'Present continuous → past continuous en estilo indirecto.' },
+          { prompt: 'They said: "We will finish tomorrow." Reported: They said that they ____ finish tomorrow.', options: ['would', 'will', 'could'], answer: 'a', explanation: 'Will → would en estilo indirecto.' },
+          { prompt: 'He said: "I can speak French." Reported: He said that he ____ speak French.', options: ['could', 'can', 'would'], answer: 'a', explanation: 'Can → could en estilo indirecto.' },
+          { prompt: 'She said: "I have been waiting here." Reported: She said that she ____ been waiting here.', options: ['had', 'has', 'have'], answer: 'a', explanation: 'Present perfect continuous → past perfect continuous.' },
+          { prompt: 'He said: "I may arrive late." Reported: He said that he ____ arrive late.', options: ['might', 'may', 'must'], answer: 'a', explanation: 'May → might en estilo indirecto.' },
+          { prompt: 'She said: "I am tired." Reported: She said that she ____ tired.', options: ['was', 'is', 'will'], answer: 'a', explanation: 'Present simple → past simple en estilo indirecto.' },
+          { prompt: 'They said: "We have seen that movie." Reported: They said that they ____ seen that movie.', options: ['had', 'have', 'has'], answer: 'a', explanation: 'Present perfect → past perfect en estilo indirecto.' },
+          { prompt: 'He said: "I will help you." Reported: He said that he ____ help me.', options: ['would', 'will', 'can'], answer: 'a', explanation: 'Will → would en estilo indirecto.' },
+          { prompt: 'She said: "I am cooking dinner." Reported: She said that she ____ cooking dinner.', options: ['was', 'is', 'will'], answer: 'a', explanation: 'Present continuous → past continuous en estilo indirecto.' }
+        ]
+      },
+      {
+        name: 'Relative Clauses',
+        colorClass: 'topic-1',
+        questions: [
+          { prompt: 'The car _____ he bought is blue.', options: ['who', 'which', 'whose'], answer: 'b', explanation: 'Objeto inanimado en defining clause → which.' },
+          { prompt: 'My cousin, _____ lives in London, is visiting.', options: ['who', 'that', 'which'], answer: 'a', explanation: 'Non-defining clause para persona → who (nunca that con comas).' },
+          { prompt: 'The students _____ homework is missing must stay.', options: ['that', 'whose', 'which'], answer: 'b', explanation: 'Pertenencia → whose.' },
+          { prompt: 'I met a writer _____ won many awards.', options: ['who', 'which', 'where'], answer: 'a', explanation: 'Persona sujeto en defining clause → who.' },
+          { prompt: 'This is the museum _____ we saw the exhibition.', options: ['who', 'where', 'that'], answer: 'b', explanation: 'Lugar donde sucede la acción → where.' },
+          { prompt: 'He joined the team _____ needed a goalkeeper.', options: ['which', 'who', 'where'], answer: 'a', explanation: 'Objeto colectivo en defining clause → which.' },
+          { prompt: 'The house, _____ windows are broken, needs repair.', options: ['whose', 'that', 'who'], answer: 'a', explanation: 'Non-defining con pertenencia → whose.' },
+          { prompt: 'The teacher _____ students complained retired.', options: ['who', 'that', 'whose'], answer: 'c', explanation: 'Pertenencia → whose (los estudiantes pertenecen al profesor).' },
+          { prompt: 'I remember the restaurant _____ we ate together.', options: ['where', 'which', 'who'], answer: 'a', explanation: 'Lugar donde ocurre la acción → where.' },
+          { prompt: 'The reason _____ she left was personal.', options: ['why', 'when', 'which'], answer: 'a', explanation: 'Razón → why.' }
+        ]
+      },
+      {
+        name: 'Passive & Causative',
+        colorClass: 'topic-2',
+        questions: [
+          { prompt: 'The letter _____ yesterday.', options: ['was sent', 'sends', 'sent'], answer: 'a', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'English _____ all over the world.', options: ['speaks', 'is spoken', 'was spoken'], answer: 'b', explanation: 'Present simple passive: is/are + past participle.' },
+          { prompt: 'She had her car _____.', options: ['repair', 'repairing', 'repaired'], answer: 'c', explanation: 'Causativa: have + object + past participle.' },
+          { prompt: 'A new museum _____ at the moment.', options: ['is built', 'is being built', 'was built'], answer: 'b', explanation: 'Present continuous passive: is/are being + past participle.' },
+          { prompt: 'I got the mechanic _____ my car.', options: ['fix', 'to fix', 'fixed'], answer: 'b', explanation: 'Causativa: get + person + to-infinitive.' },
+          { prompt: 'The results _____ by tomorrow.', options: ['will announce', 'are announced', 'will be announced'], answer: 'c', explanation: 'Future passive: will be + past participle.' },
+          { prompt: 'She had the hairdresser _____ her hair.', options: ['to cut', 'cut', 'cutting'], answer: 'b', explanation: 'Causativa: have + person + bare infinitive (sin to).' },
+          { prompt: 'I had my photo _____ by a professional.', options: ['take', 'taken', 'to take'], answer: 'b', explanation: 'Causativa: have + object + past participle.' },
+          { prompt: 'Many languages _____ in Switzerland.', options: ['are spoken', 'spoke', 'is spoken'], answer: 'a', explanation: 'Present simple passive plural: are + past participle.' },
+          { prompt: 'She got her friends _____ her move.', options: ['help', 'to help', 'helped'], answer: 'b', explanation: 'Causativa: get + person + to-infinitive.' }
+        ]
+      },
+      {
+        name: 'Conditionals',
+        colorClass: 'topic-3',
+        questions: [
+          { prompt: 'If it _____ tomorrow, we will stay at home.', options: ['rains', 'will rain', 'rained'], answer: 'a', explanation: '1er condicional: if + present simple.' },
+          { prompt: 'Water _____ if you heat it to 100 degrees.', options: ['would boil', 'will boil', 'boils'], answer: 'c', explanation: 'Condicional cero: present simple para verdades científicas.' },
+          { prompt: 'I wish I _____ speak Italian.', options: ['can', 'could', 'will'], answer: 'b', explanation: 'wish + could para habilidad irreal en el presente.' },
+          { prompt: 'If she had left earlier, she _____ the bus.', options: ['catches', 'would catch', 'would have caught'], answer: 'c', explanation: '3er condicional: would have + past participle.' },
+          { prompt: 'If only I _____ that yesterday!', options: ['do not say', 'did not say', 'had not said'], answer: 'c', explanation: 'if only + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'He wishes he _____ to university when he was young.', options: ['goes', 'went', 'had gone'], answer: 'c', explanation: 'wish + past perfect para arrepentimiento sobre el pasado.' },
+          { prompt: 'If I _____ the answer, I would tell you right now.', options: ['know', 'knew', 'had known'], answer: 'b', explanation: '2º condicional: if + past simple.' },
+          { prompt: 'I wish it _____ raining!', options: ['stops', 'stopped', 'would stop'], answer: 'c', explanation: 'wish + would para queja de situación externa.' },
+          { prompt: 'If she _____ a doctor, she could help more people.', options: ['is', 'were', 'had been'], answer: 'b', explanation: '2º condicional: if + past simple (were es la forma estándar).' },
+          { prompt: 'If you drop a glass, it _____.', options: ['breaks', 'would break', 'will break'], answer: 'a', explanation: 'Condicional cero: present simple para consecuencias naturales.' }
+        ]
+      },
+      {
+        name: 'Modal Verbs',
+        colorClass: 'topic-4',
+        questions: [
+          { prompt: 'You _____ wear a seatbelt. It is the law.', options: ['should', 'must', 'might'], answer: 'b', explanation: 'must para obligación impuesta por la ley.' },
+          { prompt: 'He _____ be at home — the lights are off and his car is gone.', options: ['must', 'cannot', 'should'], answer: 'b', explanation: 'cannot para deducción negativa basada en la evidencia.' },
+          { prompt: 'It _____ rain tomorrow — there is a chance but it is not certain.', options: ['must', 'might', 'should'], answer: 'b', explanation: 'might para posibilidad incierta.' },
+          { prompt: 'You _____ come to the meeting — it is completely optional.', options: ['must not', 'do not have to', 'should not'], answer: 'b', explanation: 'do not have to = no es necesario (no es prohibición).' },
+          { prompt: 'She _____ speak five languages when she was young.', options: ['can', 'could', 'must'], answer: 'b', explanation: 'could para habilidad en el pasado.' },
+          { prompt: 'You _____ have told me! I was completely in the dark.', options: ['should', 'might', 'must'], answer: 'a', explanation: 'should have + p.p. para crítica por acción no realizada.' },
+          { prompt: 'He _____ be exhausted — he has not slept in three days.', options: ['should', 'might', 'must'], answer: 'c', explanation: 'must para deducción positiva fuerte.' },
+          { prompt: 'You _____ smoke in here. It is not allowed under any circumstances.', options: ['must not', 'do not have to', 'should'], answer: 'a', explanation: 'must not = prohibición.' },
+          { prompt: 'She _____ have forgotten — she never forgets anything.', options: ['must', 'cannot', 'should'], answer: 'b', explanation: 'cannot have + p.p. para deducción negativa sobre el pasado.' },
+          { prompt: 'He _____ have taken the money — he was the only one in the room.', options: ['should', 'must', 'cannot'], answer: 'b', explanation: 'must have + p.p. para deducción positiva sobre el pasado.' }
+        ]
+      },
+      {
+        name: 'Verb Structures',
+        colorClass: 'topic-5',
+        questions: [
+          { prompt: 'She enjoys _____ to music every evening.', options: ['listen', 'to listen', 'listening'], answer: 'c', explanation: 'enjoy + gerundio (-ing).' },
+          { prompt: 'He decided _____ medicine at university.', options: ['to study', 'studying', 'study'], answer: 'a', explanation: 'decide + infinitivo (to + verbo).' },
+          { prompt: 'I remember _____ my wallet on the table yesterday.', options: ['to leave', 'leave', 'leaving'], answer: 'c', explanation: 'remember + gerundio = recordar una acción pasada.' },
+          { prompt: 'She stopped _____ for health reasons.', options: ['smoking', 'to smoke', 'smoke'], answer: 'a', explanation: 'stop + gerundio = dejar de hacer algo.' },
+          { prompt: 'She is afraid of _____ in front of large groups.', options: ['speak', 'to speak', 'speaking'], answer: 'c', explanation: 'afraid of + gerundio (of es preposición).' },
+          { prompt: 'I cannot help _____ when I hear that song.', options: ['laugh', 'to laugh', 'laughing'], answer: 'c', explanation: 'cannot help + gerundio.' },
+          { prompt: 'He refused _____ any of the journalists\' questions.', options: ['answering', 'answer', 'to answer'], answer: 'c', explanation: 'refuse + infinitivo.' },
+          { prompt: 'They suggested _____ a different route to avoid traffic.', options: ['to take', 'taking', 'take'], answer: 'b', explanation: 'suggest + gerundio.' },
+          { prompt: 'She is looking forward to _____ you at the party.', options: ['see', 'to see', 'seeing'], answer: 'c', explanation: 'look forward to + gerundio (to es preposición).' },
+          { prompt: 'He avoided _____ her after their argument.', options: ['to see', 'see', 'seeing'], answer: 'c', explanation: 'avoid + gerundio.' }
+        ]
+      }
+    ];
+
+    const QUESTIONS_PER_TOPIC = 5;
+
+    let examQuestions = [];
+    let examState = { currentIndex: 0, answers: [], questionChecked: false };
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function buildExam() {
+      const allQ = [];
+      POOLS.forEach((pool, topicIndex) => {
+        const selected = shuffleArray(pool.questions).slice(0, QUESTIONS_PER_TOPIC);
+        selected.forEach(q => allQ.push({ ...q, topicIndex }));
+      });
+      examQuestions = shuffleArray(allQ);
+    }
+
+    function startExam() {
+      buildExam();
+      examState = { currentIndex: 0, answers: [], questionChecked: false };
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('results-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = examQuestions[examState.currentIndex];
+      const idx = examState.currentIndex;
+      const total = examQuestions.length;
+
+      document.getElementById('progress-label').textContent = `${idx + 1} / ${total}`;
+      document.getElementById('progress-fill').style.width = `${(idx / total) * 100}%`;
+
+      const pool = POOLS[q.topicIndex];
+      document.getElementById('topic-badge-area').innerHTML =
+        `<span class="topic-badge ${pool.colorClass}">${pool.name}</span>`;
+
+      const qa = document.getElementById('question-area');
+      qa.innerHTML = '';
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${idx + 1}. ${q.prompt}`;
+      qa.appendChild(p);
+
+      const optDiv = document.createElement('div');
+      optDiv.className = 'choice-options';
+      q.options.forEach((opt, i) => {
+        const id = `opt-${idx}-${i}`;
+        const label = document.createElement('label');
+        label.className = 'choice-label';
+        const radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'exam-answer';
+        radio.value = String.fromCharCode(97 + i);
+        radio.id = id;
+        radio.className = 'choice-input';
+        const span = document.createElement('span');
+        span.textContent = `${String.fromCharCode(97 + i)}) ${opt}`;
+        label.appendChild(radio);
+        label.appendChild(span);
+        optDiv.appendChild(label);
+      });
+      qa.appendChild(optDiv);
+
+      const feedback = document.getElementById('question-feedback');
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+      document.getElementById('next-button').textContent = 'Comprobar';
+      examState.questionChecked = false;
+    }
+
+    function handleNext() {
+      const q = examQuestions[examState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const isLast = examState.currentIndex === examQuestions.length - 1;
+
+      if (!examState.questionChecked) {
+        const selected = document.querySelector('input[name="exam-answer"]:checked');
+        const userAnswer = selected ? selected.value : '';
+        const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
+        const correct = answers.includes(userAnswer);
+
+        examState.answers.push({ topicIndex: q.topicIndex, correct });
+
+        const correctDisplay = answers
+          .map(a => `${a}) ${q.options[a.charCodeAt(0) - 97]}`).join(' / ');
+
+        if (correct) {
+          feedback.textContent = `Correcto. ${q.explanation || ''}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          feedback.textContent = `Incorrecto. Respuesta correcta: "${correctDisplay}". ${q.explanation || ''}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        examState.questionChecked = true;
+        document.getElementById('next-button').textContent = isLast ? 'Ver resultados' : 'Siguiente pregunta';
+      } else {
+        examState.currentIndex += 1;
+        if (isLast) {
+          showResults();
+        } else {
+          showQuestion();
+        }
+      }
+    }
+
+    function showResults() {
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('results-screen').classList.remove('hidden');
+
+      const topicScores = POOLS.map((pool, ti) => {
+        const relevant = examState.answers.filter(a => a.topicIndex === ti);
+        const correct = relevant.filter(a => a.correct).length;
+        return { name: pool.name, colorClass: pool.colorClass, correct, total: QUESTIONS_PER_TOPIC };
+      });
+
+      const totalCorrect = examState.answers.filter(a => a.correct).length;
+      const totalQ = examQuestions.length;
+      const pct = Math.round((totalCorrect / totalQ) * 100);
+
+      let grade, gradeClass, gradeLabel;
+      if (pct >= 90)      { grade = 'A'; gradeClass = 'grade-a'; gradeLabel = 'Sobresaliente'; }
+      else if (pct >= 75) { grade = 'B'; gradeClass = 'grade-b'; gradeLabel = 'Notable'; }
+      else if (pct >= 60) { grade = 'C'; gradeClass = 'grade-c'; gradeLabel = 'Bien'; }
+      else if (pct >= 50) { grade = 'D'; gradeClass = 'grade-d'; gradeLabel = 'Suficiente'; }
+      else                { grade = 'F'; gradeClass = 'grade-f'; gradeLabel = 'Insuficiente'; }
+
+      let bestScore = totalCorrect;
+      let attempts = 1;
+      try {
+        const stored = JSON.parse(localStorage.getItem('noelia_exam') || '{}');
+        attempts = (stored.attempts || 0) + 1;
+        if ((stored.best || 0) > bestScore) bestScore = stored.best;
+        localStorage.setItem('noelia_exam', JSON.stringify({
+          best: bestScore,
+          attempts,
+          last: new Date().toLocaleDateString('es-ES')
+        }));
+      } catch(e) {}
+
+      const topicRowsHTML = topicScores.map(ts => {
+        const tsPct = Math.round((ts.correct / ts.total) * 100);
+        const barColor = ts.correct >= 4 ? '#16a34a' : ts.correct >= 3 ? '#d97706' : '#dc2626';
+        return `
+          <div class="results-topic-row">
+            <span class="results-topic-name">${ts.name}</span>
+            <div class="results-bar-wrap">
+              <div class="results-bar-fill" style="width:${tsPct}%;background:${barColor}"></div>
+            </div>
+            <span class="results-score">${ts.correct}/${ts.total} &middot; ${tsPct}%</span>
+          </div>`;
+      }).join('');
+
+      const bestNote = attempts > 1
+        ? `<p class="exam-best-note">Mejor puntuación: ${bestScore}/${totalQ} &middot; ${attempts} intentos</p>`
+        : '';
+
+      document.getElementById('results-content').innerHTML = `
+        <div style="text-align:center;margin-bottom:20px;">
+          <div class="exam-grade ${gradeClass}">${grade}</div>
+          <p class="exam-grade-label">${gradeLabel}</p>
+          <p class="exam-total">${totalCorrect} de ${totalQ} correctas &middot; ${pct}%</p>
+        </div>
+        ${topicRowsHTML}
+        ${bestNote}
+      `;
+    }
+
+    function initStartScreen() {
+      const el = document.getElementById('exam-start-best');
+      try {
+        const stored = JSON.parse(localStorage.getItem('noelia_exam') || '{}');
+        if (stored.best) {
+          const total = POOLS.length * QUESTIONS_PER_TOPIC;
+          el.textContent = `Mejor puntuación anterior: ${stored.best}/${total} · ${stored.attempts} intento${stored.attempts !== 1 ? 's' : ''}`;
+        }
+      } catch(e) {}
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initStartScreen();
+      document.getElementById('start-exam-btn').addEventListener('click', startExam);
+      document.getElementById('next-button').addEventListener('click', handleNext);
+      document.getElementById('new-exam-btn').addEventListener('click', () => {
+        document.getElementById('results-screen').classList.add('hidden');
+        document.getElementById('start-screen').classList.remove('hidden');
+        initStartScreen();
+      });
+    });
+  </script>
+</body>
+</html>

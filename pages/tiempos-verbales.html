@@ -1,0 +1,536 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tiempos verbales | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Tiempos verbales</span>
+        <h1>Selecciona tu ejercicio</h1>
+        <p>Elige qué tipo de ejercicio quieres hacer: completar, elegir, corregir o traducir. Cada pregunta se mostrará una por una.</p>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 4 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también se convierte en penalización final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Respuesta la siguiente pregunta</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Completar con el tiempo verbal correcto',
+        theory: '<table class="theory-table"><thead><tr><th>Situación</th><th>Tiempo</th></tr></thead><tbody><tr><td>Acción habitual o hecho</td><td>Present simple</td></tr><tr><td>Acción en curso</td><td>Present continuous</td></tr><tr><td>Resultado actual</td><td>Present perfect</td></tr><tr><td>Acción anterior en el pasado</td><td>Past perfect</td></tr><tr><td>Finalización antes del futuro</td><td>Future perfect</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'By the time we arrived, the train ______ (leave).', answer: 'had left', explanation: 'Usa past perfect porque el tren se fue antes de que llegáramos; expresa que la acción anterior quedó completada.' },
+          { prompt: 'She ______ (work) here since 2017.', answer: 'has worked', explanation: 'El present perfect se usa cuando una situación empezó en el pasado y continúa en el presente.' },
+          { prompt: 'While I ______ (study), he was playing games.', answer: 'was studying', explanation: 'El past continuous muestra una acción en progreso en el pasado mientras otra ocurría.' },
+          { prompt: 'They ______ not ______ (finish) yet.', answer: 'have not finished', explanation: 'El present perfect con yet se usa para acciones que afectan la situación actual.' },
+          { prompt: 'He ______ just ______ (go) out.', answer: 'has just gone', explanation: 'Just con present perfect indica un evento pasado reciente con relevancia actual.' },
+          { prompt: 'By next year, I ______ ______ (complete) university.', answer: 'will have completed', explanation: 'El future perfect expresa la culminación antes de un momento futuro determinado.' },
+          { prompt: 'I wish I ______ (can) speak French.', answer: 'could', explanation: 'Después de I wish usamos formas pasadas para situaciones irreales en el presente.' },
+          { prompt: 'We ______ (watch) TV when the lights went out.', answer: 'were watching', explanation: 'El past continuous describe la acción interrumpida que estaba ocurriendo en ese momento.' },
+          { prompt: 'I ______ (never / see) a comet before.', answer: 'have never seen', explanation: 'El present perfect es típico con never para describir experiencias de vida.' },
+          { prompt: 'She ______ (already / leave) when I arrived.', answer: 'had already left', explanation: 'El past perfect indica una acción completada antes de otro evento pasado.' },
+          { prompt: 'They ______ (plan) the trip since Monday.', answer: 'have been planning', explanation: 'El present perfect continuous resalta un proceso que empezó en el pasado y continúa.' },
+          { prompt: 'When I called, he ______ (not answer).', answer: 'was not answering', explanation: 'El past continuous negativo se usa para una acción en curso en el pasado.' },
+          { prompt: 'She ______ (write) the letter by tomorrow.', answer: 'will have written', explanation: 'El future perfect sugiere que la carta estará terminada antes de mañana.' },
+          { prompt: 'He ______ (be) here before.', answer: 'has been', explanation: 'El present perfect comunica una experiencia previa con relevancia al presente.' },
+          { prompt: 'We ______ (finish) our homework yesterday.', answer: 'finished', explanation: 'Yesterday es un marcador claro de pasado que exige past simple.' },
+          { prompt: 'If it ______ (rain), we will stay home.', answer: 'rains', explanation: 'En el primer condicional, la cláusula if usa presente simple.' },
+          { prompt: 'By next week, they ______ (complete) the project.', answer: 'will have completed', explanation: 'Future perfect para una acción completada antes de otro momento futuro.' },
+          { prompt: 'I ______ (go) to London last summer.', answer: 'went', explanation: 'Last summer exige pasado simple para una acción completada.' },
+          { prompt: 'She ______ (start) studying at 8 p.m.', answer: 'started', explanation: 'Un punto específico en el pasado toma past simple.' },
+          { prompt: 'They ______ (live) here for ten years.', answer: 'have lived', explanation: 'El present perfect con for describe un periodo que se extiende hasta ahora.' },
+          { prompt: 'He ______ (not see) her since Monday.', answer: 'has not seen', explanation: 'Since indica present perfect para un periodo continuo desde el lunes.' },
+          { prompt: 'We ______ (be) friends since childhood.', answer: 'have been', explanation: 'Un estado continuo desde la infancia usa present perfect.' },
+          { prompt: 'By the time she arrived, we ______ (already / eat).', answer: 'had already eaten', explanation: 'Past perfect para la acción completada antes de otro evento pasado.' },
+          { prompt: 'If I ______ (know), I would tell you.', answer: 'knew', explanation: 'El second conditional requiere pasado simple después de if.' },
+          { prompt: 'She ______ (study) all day.', answer: 'has been studying', explanation: 'El present perfect continuous enfatiza duración y actividad reciente.' },
+          { prompt: 'They ______ (go) to Paris last summer.', answer: 'went', explanation: 'Past simple se usa con la expresión de tiempo last summer.' },
+          { prompt: 'I ______ (lose) my keys yesterday.', answer: 'lost', explanation: 'Yesterday señala past simple para una acción completada.' },
+          { prompt: 'He ______ (drive) when the accident happened.', answer: 'was driving', explanation: 'Una acción pasada en progreso se expresa con past continuous.' },
+          { prompt: 'They ______ (play) football when it started raining.', answer: 'were playing', explanation: 'El past continuous describe la acción interrumpida por la lluvia.' },
+          { prompt: 'By 2030, he ______ (retire).', answer: 'will have retired', explanation: 'Future perfect predice una acción terminada para una fecha futura.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<table class="theory-table"><thead><tr><th>Señal</th><th>Tiempo</th></tr></thead><tbody><tr><td>Yesterday / last week</td><td>Past simple</td></tr><tr><td>Since / for / ever / never</td><td>Present perfect</td></tr><tr><td>Now / at the moment</td><td>Present continuous</td></tr><tr><td>By tomorrow / soon</td><td>Future simple / perfect</td></tr></tbody></table>',
+        type: 'choice',
+        items: [
+          { prompt: 'If I ____ you, I would study harder.', options: ['am', 'were', 'was'], answer: 'b', explanation: "Usa 'were' en oraciones hipotéticas incluso con I; es la forma estándar del subjuntivo pasado en inglés formal." },
+          { prompt: 'She ____ here since 2010.', options: ['lives', 'has lived', 'lived'], answer: 'b', explanation: "El present perfect conecta el inicio pasado con la duración presente, por lo que 'has lived' es correcto." },
+          { prompt: 'He ____ already finished.', options: ['has', 'have', 'had'], answer: 'a', explanation: "'He' requiere 'has' en la estructura de present perfect." },
+          { prompt: 'By tomorrow, I ____ finished it.', options: ['will have', 'will', 'have'], answer: 'a', explanation: "El future perfect 'will have finished' muestra finalización antes de un momento futuro." },
+          { prompt: 'I wish I ____ rich.', options: ['am', 'was', 'were'], answer: 'c', explanation: "En deseos contrarios a la realidad, 'were' es la forma correcta para todos los sujetos." },
+          { prompt: 'They ____ TV now.', options: ['watch', 'are watching', 'watched'], answer: 'b', explanation: "La acción ocurre en el momento presente, así que se necesita present continuous." },
+          { prompt: 'She ____ cooking now.', options: ['is', 'are', 'was'], answer: 'a', explanation: "El sujeto she se combina con 'is' en el present continuous." },
+          { prompt: 'We ____ the film yesterday.', options: ['see', 'saw', 'seen'], answer: 'b', explanation: "El past simple 'saw' es necesario con yesterday." },
+          { prompt: 'They ____ to school every day.', options: ['go', 'goes', 'went'], answer: 'a', explanation: "Un sujeto plural con una acción habitual usa 'go' en presente simple." },
+          { prompt: 'I ____ never seen it.', options: ['have', 'has', 'had'], answer: 'a', explanation: "Primera persona singular con present perfect usa el auxiliar 'have'." },
+          { prompt: 'She ____ English since 2015.', options: ['learns', 'has learned', 'learned'], answer: 'b', explanation: "El present perfect es necesario con since para conectar el inicio pasado con el presente." },
+          { prompt: 'He ____ at work now.', options: ['is', 'are', 'was'], answer: 'a', explanation: "Un estado actual requiere present simple 'is'." },
+          { prompt: 'We ____ dinner when the guests arrived.', options: ['eat', 'were eating', 'ate'], answer: 'b', explanation: "El past continuous indica que la acción estaba en curso cuando llegaron los invitados." },
+          { prompt: 'If it ____ tomorrow, we will cancel.', options: ['rains', 'will rain', 'rain'], answer: 'a', explanation: "Las oraciones condicionales usan presente simple después de if para condiciones futuras." },
+          { prompt: 'She ____ already left.', options: ['has', 'have', 'had'], answer: 'a', explanation: "El present perfect de tercera persona singular lleva 'has'." },
+          { prompt: 'They ____ in Spain for years.', options: ['live', 'have lived', 'lived'], answer: 'b', explanation: "Una duración que afecta el presente pide present perfect." },
+          { prompt: 'I ____ you tomorrow.', options: ['call', 'will call', 'called'], answer: 'b', explanation: "El future simple 'will call' es correcto para una promesa o plan." },
+          { prompt: 'He ____ homework every evening.', options: ['do', 'does', 'did'], answer: 'b', explanation: "El presente simple de tercera persona singular requiere 'does'." },
+          { prompt: 'She ____ the car yesterday.', options: ['drives', 'drove', 'was driving'], answer: 'b', explanation: "Una acción completada en el pasado usa past simple." },
+          { prompt: 'I ____ this movie before.', options: ['have seen', 'has seen', 'had seen'], answer: 'a', explanation: "El present perfect expresa experiencia hasta ahora." },
+          { prompt: 'By six, they ____ finished.', options: ['have', 'will have', 'had'], answer: 'b', explanation: "Future perfect indica finalización para un momento futuro." },
+          { prompt: 'We ____ in the park now.', options: ['walk', 'are walking', 'walked'], answer: 'b', explanation: "El present continuous describe una acción en progreso." },
+          { prompt: 'She ____ to school last week.', options: ['goes', 'went', 'gone'], answer: 'b', explanation: "Un marco temporal pasado específico requiere past simple." },
+          { prompt: 'I ____ water every day.', options: ['drink', 'drinks', 'drank'], answer: 'a', explanation: "El presente simple de primera persona singular usa el verbo base sin -s." },
+          { prompt: 'They ____ already gone.', options: ['have', 'has', 'had'], answer: 'a', explanation: "El sujeto plural con present perfect usa el auxiliar 'have'." },
+          { prompt: 'If he ____ faster, he would win.', options: ['runs', 'ran', 'run'], answer: 'b', explanation: "El segundo condicional usa pasado simple después de if." },
+          { prompt: 'She ____ studying when I called.', options: ['is', 'was', 'were'], answer: 'b', explanation: "Una acción en curso en el pasado usa past continuous." },
+          { prompt: 'We ____ there by tomorrow.', options: ['will be', 'are', 'were'], answer: 'a', explanation: "Un evento planeado en el futuro usa future simple." },
+          { prompt: 'He ____ to the store now.', options: ['is going', 'goes', 'went'], answer: 'a', explanation: "El present continuous se usa para planes o acciones actuales." },
+          { prompt: 'I ____ my keys yesterday.', options: ['lose', 'lost', 'have lost'], answer: 'b', explanation: "Yesterday indica past simple." }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<table class="theory-table"><thead><tr><th>Error</th><th>Corrección</th></tr></thead><tbody><tr><td>Tercera persona singular</td><td>Doesn’t / does + verbo base</td></tr><tr><td>Yesterday / last week</td><td>Past simple</td></tr><tr><td>Now / at the moment</td><td>Present continuous</td></tr><tr><td>Since / never / already</td><td>Present perfect</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'She don’t like pizza.', answer: 'She doesn’t like pizza.', explanation: 'La tercera persona singular requiere does not, contraído como doesn’t.' },
+          { prompt: 'I has seen it.', answer: 'I have seen it.', explanation: 'La primera persona singular usa have, no has, en present perfect.' },
+          { prompt: 'They was happy.', answer: 'They were happy.', explanation: 'Un sujeto plural necesita were en past simple.' },
+          { prompt: 'He go to school every day.', answer: 'He goes to school every day.', explanation: 'El presente simple de tercera persona singular requiere la forma con -s.' },
+          { prompt: 'We were go home.', answer: 'We went home.', explanation: 'El pasado simple de go es went; el auxiliar were es incorrecto aquí.' },
+          { prompt: 'I am agree.', answer: 'I agree.', explanation: 'Agree es un verbo estático; el presente simple es idiomático.' },
+          { prompt: 'She have been here yesterday.', answer: 'She was here yesterday.', explanation: 'Yesterday exige past simple, no present perfect.' },
+          { prompt: 'They has finished.', answer: 'They have finished.', explanation: 'Sujeto plural con present perfect usa have.' },
+          { prompt: 'I didn’t went there.', answer: 'I didn’t go there.', explanation: 'Después de did not, el verbo vuelve a la forma base, por eso go es correcto.' },
+          { prompt: 'He working now.', answer: 'He is working now.', explanation: 'El presente continuo necesita el auxiliar is.' },
+          { prompt: 'We was tired.', answer: 'We were tired.', explanation: 'Sujeto plural en pasado usa were.' },
+          { prompt: 'She don’t know him.', answer: 'She doesn’t know him.', explanation: 'La negación de tercera persona singular usa doesn’t.' },
+          { prompt: 'I have saw it.', answer: 'I have seen it.', explanation: 'El participio pasado de see es seen en present perfect.' },
+          { prompt: 'They is playing.', answer: 'They are playing.', explanation: 'Sujeto plural requiere el auxiliar plural are.' },
+          { prompt: 'He were sleeping.', answer: 'He was sleeping.', explanation: 'He lleva el auxiliar pasado singular was.' },
+          { prompt: 'I goes to school.', answer: 'I go to school.', explanation: 'El presente simple de primera persona singular usa el verbo base sin -s.' },
+          { prompt: 'She don’t play tennis.', answer: 'She doesn’t play tennis.', explanation: 'De nuevo, la negación de tercera persona singular requiere doesn’t.' },
+          { prompt: 'We has arrived.', answer: 'We have arrived.', explanation: 'Sujeto plural usa have para el present perfect.' },
+          { prompt: 'They was here.', answer: 'They were here.', explanation: 'El pasado simple plural usa were.' },
+          { prompt: 'I am go home.', answer: 'I am going home.', explanation: 'El presente continuo requiere la forma -ing de go.' },
+          { prompt: 'He don’t work.', answer: 'He doesn’t work.', explanation: 'Do not se contrae a doesn’t con he.' },
+          { prompt: 'She were happy.', answer: 'She was happy.', explanation: 'She lleva was en past simple.' },
+          { prompt: 'They goes there.', answer: 'They go there.', explanation: 'Sujeto plural no toma -s en present simple.' },
+          { prompt: 'We didn’t saw it.', answer: 'We didn’t see it.', explanation: 'Después de did not, el verbo está en forma base, por eso see es correcto.' },
+          { prompt: 'He have done it.', answer: 'He has done it.', explanation: 'Tercera persona singular necesita has en present perfect.' },
+          { prompt: 'I am study now.', answer: 'I am studying now.', explanation: 'El presente continuo requiere el gerundio studying.' },
+          { prompt: 'She was cook.', answer: 'She was cooking.', explanation: 'El past continuous requiere la forma -ing del verbo.' },
+          { prompt: 'They is here.', answer: 'They are here.', explanation: 'Sujeto plural requiere el auxiliar plural are.' },
+          { prompt: 'We has eaten.', answer: 'We have eaten.', explanation: 'Sujeto plural usa have, no has.' },
+          { prompt: 'He don’t likes it.', answer: 'He doesn’t like it.', explanation: 'La tercera persona singular negativa usa doesn’t y el verbo base like.' }
+        ]
+      },
+      translation: {
+        label: 'Traducir al inglés',
+        theory: '<table class="theory-table"><thead><tr><th>Español</th><th>Inglés</th></tr></thead><tbody><tr><td>Hábito</td><td>Present simple</td></tr><tr><td>Ahora mismo</td><td>Present continuous</td></tr><tr><td>Resultado actual</td><td>Present perfect</td></tr><tr><td>Antes de otro pasado</td><td>Past perfect</td></tr><tr><td>Futuro / plan</td><td>Will / going to</td></tr></tbody></table>',
+        type: 'textarea',
+        items: [
+          { prompt: 'Si tuviera dinero, viajaría.', answer: 'If I had money, I would travel.', explanation: 'El second conditional expresa una condición irreal en el presente.' },
+          { prompt: 'Ella ha vivido aquí desde 2010.', answer: 'She has lived here since 2010.', explanation: 'Since con present perfect marca un periodo desde el pasado hasta el presente.' },
+          { prompt: 'Cuando llegué, ya se habían ido.', answer: 'When I arrived, they had already left.', explanation: 'Se necesita past perfect porque la salida ocurrió antes de la llegada.' },
+          { prompt: 'Me gustaría ser médico.', answer: 'I would like to be a doctor.', explanation: 'El deseo educado se expresa con would like.' },
+          { prompt: 'Estábamos viendo TV cuando sonó el teléfono.', answer: 'We were watching TV when the phone rang.', explanation: 'Past continuous más past simple muestra interrupción.' },
+          { prompt: 'Nunca he estado en Italia.', answer: 'I have never been to Italy.', explanation: 'El present perfect describe una experiencia de vida hasta ahora.' },
+          { prompt: 'Si estudias, aprobarás.', answer: 'If you study, you will pass.', explanation: 'El first conditional usa presente simple en la cláusula if.' },
+          { prompt: 'Había terminado antes de las 8.', answer: 'I had finished before 8.', explanation: 'El past perfect describe una acción completada antes de un momento pasado.' },
+          { prompt: 'Estoy acostumbrado a levantarme temprano.', answer: 'I am used to getting up early.', explanation: 'To be used to requiere gerundio después.' },
+          { prompt: 'Ellos habrán terminado mañana.', answer: 'They will have finished tomorrow.', explanation: 'El future perfect comunica finalización para mañana.' },
+          { prompt: 'Yo estaba estudiando.', answer: 'I was studying.', explanation: 'El past continuous describe una acción pasada en curso.' },
+          { prompt: 'Ella trabaja todos los días.', answer: 'She works every day.', explanation: 'Present simple para acciones habituales con she.' },
+          { prompt: 'Ellos fueron al cine.', answer: 'They went to the cinema.', explanation: 'Past simple se usa para acciones pasadas terminadas.' },
+          { prompt: 'Nosotros vivíamos allí.', answer: 'We lived there.', explanation: 'Past simple describe un estado o hábito pasado.' },
+          { prompt: 'He perdido mis llaves.', answer: 'I have lost my keys.', explanation: 'El present perfect indica un evento pasado reciente con relevancia actual.' },
+          { prompt: 'Estábamos comiendo.', answer: 'We were eating.', explanation: 'El past continuous describe una acción pasada en curso.' },
+          { prompt: 'Iremos a Londres.', answer: 'We will go to London.', explanation: 'El future simple expresa un plan o intención.' },
+          { prompt: 'Ellos han terminado.', answer: 'They have finished.', explanation: 'El present perfect indica una acción completada relacionada con el ahora.' },
+          { prompt: 'Yo estaba corriendo.', answer: 'I was running.', explanation: 'El past continuous describe una acción que estaba en progreso.' },
+          { prompt: 'Hemos viajado mucho.', answer: 'We have traveled a lot.', explanation: 'El present perfect para experiencia de vida y acción acumulada.' },
+          { prompt: 'Ella está cocinando.', answer: 'She is cooking.', explanation: 'Present continuous para una acción que ocurre ahora.' },
+          { prompt: 'Él nunca miente.', answer: 'He never lies.', explanation: 'Present simple para verdades generales o hábitos.' },
+          { prompt: 'Ellos estaban jugando.', answer: 'They were playing.', explanation: 'Past continuous describe una acción pasada en progreso.' },
+          { prompt: 'Yo vi eso.', answer: 'I saw that.', explanation: 'Past simple con saw expresa una percepción pasada completada.' },
+          { prompt: 'Había llovido mucho.', answer: 'It had rained a lot.', explanation: 'Past perfect para una acción pasada que ocurrió antes de otra referencia pasada.' },
+          { prompt: 'Estudiaré mañana.', answer: 'I will study tomorrow.', explanation: 'Future simple para un plan que ocurrirá en el futuro.' },
+          { prompt: 'Ellos están trabajando.', answer: 'They are working.', explanation: 'Present continuous para acciones que están en progreso actualmente.' },
+          { prompt: 'Ella ha llegado.', answer: 'She has arrived.', explanation: 'El present perfect se usa para una llegada reciente con relevancia actual.' },
+          { prompt: 'Nosotros vivíamos en Sevilla.', answer: 'We used to live in Seville.', explanation: 'Used to expresa un hábito o estado pasado que ya no es cierto.' },
+          { prompt: 'Él habrá terminado.', answer: 'He will have finished.', explanation: 'Future perfect indica finalización antes de un punto futuro.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      startTime: 0,
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const minutes = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const remaining = String(seconds % 60).padStart(2, '0');
+      return `${minutes}:${remaining}`;
+    }
+
+    function updateStatus() {
+      const elapsedSeconds = quizState.sectionStartTime ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000) : 0;
+      document.getElementById('timer').textContent = formatTime(elapsedSeconds);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent = `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[’'”“".,?¡!¿:;-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.classList.remove('visible', 'correct', 'wrong');
+
+      if (!item) {
+        return completeSection();
+      }
+
+      const prompt = document.createElement('p');
+      prompt.className = 'question-prompt';
+      prompt.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(prompt);
+
+      if (section.theory) {
+        const theory = document.createElement('div');
+        theory.className = 'theory-box';
+        theory.innerHTML = `<strong>Teoría</strong><div class="theory-content">${section.theory}</div>`;
+        questionArea.appendChild(theory);
+      }
+
+      if (section.type === 'choice') {
+        const options = document.createElement('div');
+        options.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const optionId = `choice-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = optionId;
+          radio.className = 'choice-input';
+
+          const text = document.createElement('span');
+          text.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+
+          label.appendChild(radio);
+          label.appendChild(text);
+          options.appendChild(label);
+        });
+        questionArea.appendChild(options);
+      } else {
+        const input = section.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+        input.className = section.type === 'textarea' ? 'exercise-textarea' : 'exercise-input';
+        input.type = 'text';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      if (quizState.currentIndex === quizState.shuffledItems.length - 1) {
+        document.getElementById('next-button').textContent = 'Comprobar y terminar';
+      } else {
+        document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+      }
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLastQuestion = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = normalizeText(input.value);
+        }
+
+        const correctAnswer = section.type === 'choice' ? item.answer : normalizeText(item.answer);
+        const explanation = item.explanation || `La respuesta correcta es "${item.answer}".`;
+
+        if (userAnswer === correctAnswer) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. Explicación: ${explanation}`;
+          feedback.classList.add('correct', 'visible');
+          feedback.classList.remove('wrong');
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          feedback.textContent = `Incorrecto. Respuesta correcta: ${item.answer}. -5 puntos. Explicación: ${explanation}`;
+          feedback.classList.add('wrong', 'visible');
+          feedback.classList.remove('correct');
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLastQuestion ? 'Finalizar sección' : 'Siguiente pregunta';
+        if (isLastQuestion) {
+          document.getElementById('finish-button').classList.remove('hidden');
+        }
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLastQuestion) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsedSeconds = quizState.sectionStartTime ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000) : 0;
+      const sectionLength = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLength * 3 - elapsedSeconds * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+      const sectionSummary = document.getElementById('section-summary');
+      sectionSummary.textContent = `Sección finalizada. Puntos de esta sección: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsedSeconds)}. Bonificación por rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.remove('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>

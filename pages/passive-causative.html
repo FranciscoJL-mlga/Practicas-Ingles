@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passive y causative | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Passive and causative</span>
+        <h1>The passive and the causative</h1>
+        <p>Practica la voz pasiva y la estructura causativa con ejercicios de completar, opción múltiple y corrección de errores. Lee la teoría y elige un ejercicio.</p>
+        <div class="hero-theory-group">
+          <div class="theory-box">
+            <strong>Voz pasiva — formación</strong>
+            <table class="theory-table">
+              <thead><tr><th>Tiempo</th><th>Forma</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>Present simple</td><td>is / are + past participle</td><td>The car <span class="change-mark">is washed</span></td></tr>
+                <tr><td>Past simple</td><td>was / were + past participle</td><td>The car <span class="change-mark">was washed</span></td></tr>
+                <tr><td>Present continuous</td><td>is / are being + past participle</td><td>The car <span class="change-mark">is being washed</span></td></tr>
+                <tr><td>Present perfect</td><td>has / have been + past participle</td><td>The car <span class="change-mark">has been washed</span></td></tr>
+                <tr><td>Future simple</td><td>will be + past participle</td><td>The car <span class="change-mark">will be washed</span></td></tr>
+                <tr><td>Modal</td><td>modal + be + past participle</td><td>The car <span class="change-mark">must be washed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Estructura causativa</strong>
+            <table class="theory-table">
+              <thead><tr><th>Estructura</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>have + obj + past participle</td><td>Alguien lo hace por ti</td><td>I <span class="change-mark">had my car repaired</span></td></tr>
+                <tr><td>get + obj + past participle</td><td>Igual (más informal)</td><td>I <span class="change-mark">got my hair cut</span></td></tr>
+                <tr><td>have + person + bare infinitive</td><td>Hacer que alguien lo haga</td><td>I <span class="change-mark">had him repair</span> the car</td></tr>
+                <tr><td>get + person + to-infinitive</td><td>Convencer a alguien</td><td>I <span class="change-mark">got him to repair</span> the car</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 4 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también cuenta en la puntuación final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Responde una pregunta a la vez</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary hidden" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Voz pasiva — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Tiempo</th><th>Forma pasiva</th></tr></thead><tbody><tr><td>Present simple</td><td>is / are + p.p.</td></tr><tr><td>Past simple</td><td>was / were + p.p.</td></tr><tr><td>Pres. continuous</td><td>is / are being + p.p.</td></tr><tr><td>Pres. perfect</td><td>has / have been + p.p.</td></tr><tr><td>Future</td><td>will be + p.p.</td></tr><tr><td>Modal</td><td>modal + be + p.p.</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'The car ______ (repair) yesterday.', answer: 'was repaired', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'Dinner ______ (cook) right now.', answer: 'is being cooked', explanation: 'Present continuous passive: is/are being + past participle.' },
+          { prompt: 'The letter ______ (not / send) yet.', answer: ['has not been sent', "hasn't been sent"], explanation: 'Present perfect passive negativo: has not been + past participle.' },
+          { prompt: 'A new bridge ______ (build) at the moment.', answer: 'is being built', explanation: 'Present continuous passive: is/are being + past participle.' },
+          { prompt: 'The report ______ (finish) tomorrow.', answer: 'will be finished', explanation: 'Future passive: will be + past participle.' },
+          { prompt: 'All the food ______ (eat) before we arrived.', answer: 'had been eaten', explanation: 'Past perfect passive: had been + past participle.' },
+          { prompt: 'English ______ (speak) all over the world.', answer: 'is spoken', explanation: 'Present simple passive: is/are + past participle.' },
+          { prompt: 'She ______ (invite) to the party last week.', answer: 'was invited', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'The criminal ______ (arrest) by the police.', answer: 'was arrested', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'This film ______ (not / see) before.', answer: ['has not been seen', "hasn't been seen"], explanation: 'Present perfect passive negativo: has not been + past participle.' },
+          { prompt: 'The new hospital ______ (open) by the mayor next month.', answer: 'will be opened', explanation: 'Future passive: will be + past participle.' },
+          { prompt: 'The documents ______ (sign) before we arrived.', answer: 'had been signed', explanation: 'Past perfect passive: had been + past participle.' },
+          { prompt: 'Thousands of cars ______ (make) in this factory every year.', answer: 'are made', explanation: 'Present simple passive: is/are + past participle.' },
+          { prompt: 'The patients ______ (treat) by the doctor last week.', answer: 'were treated', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'The exam ______ (must / mark) by Friday.', answer: 'must be marked', explanation: 'Modal passive: modal + be + past participle.' }
+        ]
+      },
+      gapCausative: {
+        label: 'Causativa — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Estructura</th><th>Forma del verbo</th></tr></thead><tbody><tr><td>have + obj + ___</td><td>past participle</td></tr><tr><td>get + obj + ___</td><td>past participle</td></tr><tr><td>have + person + ___</td><td>bare infinitive (sin to)</td></tr><tr><td>get + person + ___</td><td>to + infinitive</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'She had her hair ______ (cut) yesterday.', answer: 'cut', explanation: 'have + object + past participle: el participio de cut es cut.' },
+          { prompt: 'I got my car ______ (service) at the garage.', answer: 'serviced', explanation: 'get + object + past participle: serviced es el participio de service.' },
+          { prompt: 'He had the mechanic ______ (repair) the brakes.', answer: 'repair', explanation: 'have + person + bare infinitive: sin "to" después de have con persona.' },
+          { prompt: 'She got her friend ______ (drive) her to the airport.', answer: 'to drive', explanation: 'get + person + to-infinitive: se necesita "to" después de get con persona.' },
+          { prompt: 'We had the electrician ______ (fix) the wiring.', answer: 'fix', explanation: 'have + person + bare infinitive: sin "to" después de have con persona.' },
+          { prompt: 'I got the plumber ______ (check) the pipes.', answer: 'to check', explanation: 'get + person + to-infinitive: se necesita "to" después de get con persona.' },
+          { prompt: 'She is having her portrait ______ (paint) by a local artist.', answer: 'painted', explanation: 'have + object + past participle: painted es el participio de paint.' },
+          { prompt: 'He got his suit ______ (alter) by the tailor.', answer: 'altered', explanation: 'get + object + past participle: altered es el participio de alter.' },
+          { prompt: 'I need to have my teeth ______ (check) by the dentist.', answer: 'checked', explanation: 'have + object + past participle: checked es el participio de check.' },
+          { prompt: 'They had a decorator ______ (paint) the living room.', answer: 'paint', explanation: 'have + person + bare infinitive: sin "to" después de have con persona.' },
+          { prompt: 'She got her neighbour ______ (water) the plants.', answer: 'to water', explanation: 'get + person + to-infinitive: se necesita "to" después de get con persona.' },
+          { prompt: 'I will have my nails ______ (do) before the party.', answer: 'done', explanation: 'have + object + past participle: done es el participio de do.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<div class="theory-note">Pasiva: <strong>to be + past participle</strong> (elige el tiempo correcto). Causativa: <strong>have/get + obj + p.p.</strong> o <strong>have + person + bare inf. / get + person + to-inf.</strong></div>',
+        type: 'choice',
+        items: [
+          { prompt: 'The letter _____ yesterday.', options: ['was sent', 'sends', 'sent'], answer: 'a', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'English _____ all over the world.', options: ['speaks', 'is spoken', 'was spoken'], answer: 'b', explanation: 'Present simple passive: is/are + past participle.' },
+          { prompt: 'She had her car _____.', options: ['repair', 'repairing', 'repaired'], answer: 'c', explanation: 'have + object + past participle.' },
+          { prompt: 'A new museum _____ at the moment.', options: ['is built', 'is being built', 'was built'], answer: 'b', explanation: 'Present continuous passive: is/are being + past participle.' },
+          { prompt: 'I got the mechanic _____ my car.', options: ['fix', 'to fix', 'fixed'], answer: 'b', explanation: 'get + person + to-infinitive: se necesita "to".' },
+          { prompt: 'The results _____ by tomorrow.', options: ['will announce', 'are announced', 'will be announced'], answer: 'c', explanation: 'Future passive: will be + past participle.' },
+          { prompt: 'She had the hairdresser _____ her hair.', options: ['to cut', 'cut', 'cutting'], answer: 'b', explanation: 'have + person + bare infinitive: sin "to".' },
+          { prompt: 'The suspect _____ by the police.', options: ['catches', 'caught', 'was caught'], answer: 'c', explanation: 'Past simple passive: was/were + past participle.' },
+          { prompt: 'I had my photo _____ by a professional.', options: ['take', 'taken', 'to take'], answer: 'b', explanation: 'have + object + past participle.' },
+          { prompt: 'Many languages _____ in Switzerland.', options: ['are spoken', 'spoke', 'is spoken'], answer: 'a', explanation: 'Present simple passive plural: are + past participle.' },
+          { prompt: 'She got her friends _____ her move.', options: ['help', 'to help', 'helped'], answer: 'b', explanation: 'get + person + to-infinitive: se necesita "to".' },
+          { prompt: 'The report _____ already.', options: ['is finished', 'has been finished', 'was finishing'], answer: 'b', explanation: 'Present perfect passive: has/have been + past participle.' },
+          { prompt: 'He had the secretary _____ the letter.', options: ['to type', 'typed', 'type'], answer: 'c', explanation: 'have + person + bare infinitive: sin "to".' },
+          { prompt: 'The documents _____ before we arrived.', options: ['have been signed', 'were signing', 'had been signed'], answer: 'c', explanation: 'Past perfect passive: had been + past participle.' },
+          { prompt: 'I need to get my eyes _____.', options: ['tested', 'test', 'to test'], answer: 'a', explanation: 'get + object + past participle.' }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<div class="theory-note">Comprueba: el tiempo de <strong>to be</strong> en pasiva, el participio pasado, las formas causativas (<strong>have + bare inf.</strong> vs <strong>get + to-inf.</strong>) y la concordancia.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'The book was write by Shakespeare.', answer: 'The book was written by Shakespeare.', explanation: 'El participio pasado de write es written, no write.' },
+          { prompt: 'She had her nails painting.', answer: 'She had her nails painted.', explanation: 'have + object + past participle: painted, no painting.' },
+          { prompt: 'Dinner is cook every day.', answer: 'Dinner is cooked every day.', explanation: 'Present simple passive: is + past participle (cooked).' },
+          { prompt: 'I got my friend fix my computer.', answer: 'I got my friend to fix my computer.', explanation: 'get + person + to-infinitive: se necesita "to" antes del infinitivo.' },
+          { prompt: 'The car is repaired yesterday.', answer: 'The car was repaired yesterday.', explanation: 'Yesterday indica pasado: was repaired, no is repaired.' },
+          { prompt: 'I had the mechanic to repair my car.', answer: 'I had the mechanic repair my car.', explanation: 'have + person + bare infinitive: no se usa "to" después de have con persona.' },
+          { prompt: 'The letter have been sent.', answer: 'The letter has been sent.', explanation: 'The letter es singular: has been sent, no have been sent.' },
+          { prompt: 'She got her photo took by a photographer.', answer: 'She got her photo taken by a photographer.', explanation: 'El participio pasado de take es taken, no took.' },
+          { prompt: 'The film is see by millions of people.', answer: 'The film is seen by millions of people.', explanation: 'El participio pasado de see es seen, no see.' },
+          { prompt: 'They was arrested by the police.', answer: 'They were arrested by the police.', explanation: 'Sujeto plural: were, no was.' },
+          { prompt: 'I had my hair cutting yesterday.', answer: 'I had my hair cut yesterday.', explanation: 'have + object + past participle: cut, no cutting.' },
+          { prompt: 'The house was build in 1990.', answer: 'The house was built in 1990.', explanation: 'El participio pasado de build es built, no build.' },
+          { prompt: 'She gets her clothes clean at the dry cleaner.', answer: 'She gets her clothes cleaned at the dry cleaner.', explanation: 'get + object + past participle: cleaned, no clean.' },
+          { prompt: 'The report is been written.', answer: 'The report has been written.', explanation: 'Present perfect passive: has been written, no is been written.' },
+          { prompt: 'He got his assistant to typed the letter.', answer: 'He got his assistant to type the letter.', explanation: 'Después de "to" siempre va el infinitivo: to type, no to typed.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateStatus() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      document.getElementById('timer').textContent = formatTime(elapsed);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent =
+        `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/[''""".,?¡!¿:;()\-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+
+      if (!item) return completeSection();
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(p);
+
+      if (section.theory) {
+        const t = document.createElement('div');
+        t.className = 'theory-box';
+        t.innerHTML = `<strong>Pista</strong>${section.theory}`;
+        questionArea.appendChild(t);
+      }
+
+      if (section.type === 'choice') {
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const id = `opt-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = id;
+          radio.className = 'choice-input';
+          const span = document.createElement('span');
+          span.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+          label.appendChild(radio);
+          label.appendChild(span);
+          optionsDiv.appendChild(label);
+        });
+        questionArea.appendChild(optionsDiv);
+      } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'exercise-input';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+      document.getElementById('next-button').textContent = isLast ? 'Comprobar y terminar' : 'Comprobar y siguiente';
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = input ? normalizeText(input.value) : '';
+        }
+
+        const answers = Array.isArray(item.answer) ? item.answer : [item.answer];
+        let correct = false;
+        if (section.type === 'choice') {
+          correct = answers.includes(userAnswer);
+        } else {
+          correct = answers.some(a => normalizeText(a) === userAnswer);
+        }
+
+        const explanation = item.explanation || '';
+        let correctDisplay;
+        if (section.type === 'choice') {
+          correctDisplay = answers.map(a => `${a}) ${item.options[a.charCodeAt(0) - 97]}`).join(' / ');
+        } else {
+          correctDisplay = answers.join(' / ');
+        }
+
+        if (correct) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          const plural = answers.length > 1 ? 's válidas' : ' correcta';
+          feedback.textContent = `Incorrecto. Respuesta${plural}: "${correctDisplay}". -5 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLast ? 'Finalizar sección' : 'Siguiente pregunta';
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLast) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      const sectionLen = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLen * 3 - elapsed * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+
+      const summary = document.getElementById('section-summary');
+      summary.textContent = `Sección finalizada. Puntos: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsed)}. Bonificación rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>

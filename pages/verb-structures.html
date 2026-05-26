@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verb structures | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Verb structures</span>
+        <h1>Verb structures (gerunds and infinitives)</h1>
+        <p>Practica el gerundio y el infinitivo tras verbos, las estructuras con preposición y los verbos que cambian de significado. Lee la teoría y elige un ejercicio.</p>
+        <div class="hero-theory-group">
+          <div class="theory-box">
+            <strong>Verbo + gerundio / verbo + infinitivo</strong>
+            <table class="theory-table">
+              <thead><tr><th>Verbo + gerundio (-ing)</th><th>Verbo + infinitivo (to + v)</th></tr></thead>
+              <tbody>
+                <tr><td>enjoy, avoid, suggest, mind, finish, keep, consider, admit, deny, miss, risk, practise, can't help</td><td>want, need, hope, decide, plan, manage, agree, refuse, offer, promise, expect, choose, afford, fail, tend, seem</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Doble significado y preposición + gerundio</strong>
+            <table class="theory-table">
+              <thead><tr><th>Verbo</th><th>+ gerundio</th><th>+ infinitivo</th></tr></thead>
+              <tbody>
+                <tr><td>remember</td><td>Recordar acción pasada</td><td>No olvidar hacer algo</td></tr>
+                <tr><td>forget</td><td>Acción pasada memorable</td><td>Olvidarse de hacer algo</td></tr>
+                <tr><td>stop</td><td>Dejar de hacer</td><td>Parar para hacer algo</td></tr>
+                <tr><td>try</td><td>Experimentar / probar</td><td>Intentar (con esfuerzo)</td></tr>
+                <tr><td>regret</td><td>Lamentar acción pasada</td><td>Lamentar informar algo</td></tr>
+                <tr><td>go on</td><td>Continuar lo mismo</td><td>Pasar a lo siguiente</td></tr>
+              </tbody>
+            </table>
+            <div class="theory-note" style="margin-top:8px;"><strong>Preposición + gerundio:</strong> after, before, without, by, instead of, look forward to, be used to, get used to, be good at, be afraid of, be interested in, succeed in, dream of, apologize for, insist on.</div>
+          </div>
+        </div>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 4 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también cuenta en la puntuación final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Responde una pregunta a la vez</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary hidden" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Gerundio o infinitivo — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Verbo + gerundio (-ing)</th><th>Verbo + infinitivo (to + v)</th></tr></thead><tbody><tr><td>enjoy, avoid, suggest, mind, finish, keep, consider, admit, deny, miss, risk, practise</td><td>want, need, hope, decide, plan, manage, agree, refuse, offer, promise, expect, choose, afford, fail, tend, seem</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'She enjoys ______ (read) in her free time.', answer: 'reading', explanation: 'enjoy va seguido de gerundio (-ing).' },
+          { prompt: 'He decided ______ (leave) the company after ten years.', answer: 'to leave', explanation: 'decide va seguido de infinitivo (to + verbo).' },
+          { prompt: 'They avoided ______ (talk) about the problem.', answer: 'talking', explanation: 'avoid va seguido de gerundio.' },
+          { prompt: 'She managed ______ (pass) the exam on her third attempt.', answer: 'to pass', explanation: 'manage va seguido de infinitivo.' },
+          { prompt: 'I do not mind ______ (wait) a bit longer.', answer: 'waiting', explanation: 'mind va seguido de gerundio.' },
+          { prompt: 'He refused ______ (answer) the officer\'s question.', answer: 'to answer', explanation: 'refuse va seguido de infinitivo.' },
+          { prompt: 'She finished ______ (write) the report just before midnight.', answer: 'writing', explanation: 'finish va seguido de gerundio.' },
+          { prompt: 'We plan ______ (visit) Paris next summer.', answer: 'to visit', explanation: 'plan va seguido de infinitivo.' },
+          { prompt: 'He admitted ______ (steal) the money.', answer: 'stealing', explanation: 'admit va seguido de gerundio.' },
+          { prompt: 'She promised ______ (call) as soon as she arrived.', answer: 'to call', explanation: 'promise va seguido de infinitivo.' },
+          { prompt: 'They suggested ______ (go) to a different restaurant.', answer: 'going', explanation: 'suggest va seguido de gerundio.' },
+          { prompt: 'He agreed ______ (help) us with the project.', answer: 'to help', explanation: 'agree va seguido de infinitivo.' },
+          { prompt: 'She keeps ______ (make) the same mistake over and over.', answer: 'making', explanation: 'keep va seguido de gerundio.' },
+          { prompt: 'I hope ______ (see) you at the conference.', answer: 'to see', explanation: 'hope va seguido de infinitivo.' },
+          { prompt: 'He considered ______ (apply) for the position but changed his mind.', answer: 'applying', explanation: 'consider va seguido de gerundio.' },
+          { prompt: 'She cannot afford ______ (buy) a new car this year.', answer: 'to buy', explanation: 'afford va seguido de infinitivo.' },
+          { prompt: 'They practised ______ (speak) English every single day.', answer: 'speaking', explanation: 'practise va seguido de gerundio.' },
+          { prompt: 'He failed ______ (complete) the task within the deadline.', answer: 'to complete', explanation: 'fail va seguido de infinitivo.' },
+          { prompt: 'I miss ______ (live) near the sea.', answer: 'living', explanation: 'miss va seguido de gerundio.' },
+          { prompt: 'She tends ______ (arrive) at least ten minutes late.', answer: 'to arrive', explanation: 'tend va seguido de infinitivo.' },
+          { prompt: 'They denied ______ (know) anything about the incident.', answer: 'knowing', explanation: 'deny va seguido de gerundio.' },
+          { prompt: 'He chose ______ (study) engineering at university.', answer: 'to study', explanation: 'choose va seguido de infinitivo.' },
+          { prompt: 'She risks ______ (lose) her job if she continues like this.', answer: 'losing', explanation: 'risk va seguido de gerundio.' },
+          { prompt: 'We expect ______ (finish) the project by the end of the month.', answer: 'to finish', explanation: 'expect va seguido de infinitivo.' },
+          { prompt: 'I cannot help ______ (laugh) when I watch that film.', answer: 'laughing', explanation: 'cannot help va seguido de gerundio.' },
+          { prompt: 'She offered ______ (drive) us to the airport.', answer: 'to drive', explanation: 'offer va seguido de infinitivo.' },
+          { prompt: 'He was busy ______ (prepare) for the interview all morning.', answer: 'preparing', explanation: 'be busy va seguido de gerundio.' },
+          { prompt: 'They seem ______ (enjoy) the party very much.', answer: 'to enjoy', explanation: 'seem va seguido de infinitivo.' },
+          { prompt: 'I am used to ______ (get up) early every day.', answer: 'getting up', explanation: 'be used to va seguido de gerundio (to es preposición, no parte del infinitivo).' },
+          { prompt: 'He is looking forward to ______ (see) his family at Christmas.', answer: 'seeing', explanation: 'look forward to va seguido de gerundio (to es preposición).' }
+        ]
+      },
+      gapMeaning: {
+        label: 'Doble significado y preposiciones',
+        theory: '<table class="theory-table"><thead><tr><th>Verbo</th><th>+ gerundio</th><th>+ infinitivo</th></tr></thead><tbody><tr><td>remember</td><td>Recordar algo del pasado</td><td>No olvidar una tarea futura</td></tr><tr><td>forget</td><td>Experiencia pasada memorable</td><td>Olvidarse de hacer algo</td></tr><tr><td>stop</td><td>Dejar de hacer algo</td><td>Parar para hacer otra cosa</td></tr><tr><td>try</td><td>Probar algo como experimento</td><td>Intentar algo con esfuerzo</td></tr><tr><td>regret</td><td>Lamentar acción pasada</td><td>Lamentar informar algo ahora</td></tr><tr><td>go on</td><td>Continuar la misma actividad</td><td>Pasar a la siguiente actividad</td></tr></tbody></table><div class="theory-note"><strong>Preposición + gerundio:</strong> after, before, without, by, instead of, look forward to, be used to, be good at, be afraid of, be interested in, succeed in, dream of, apologize for, insist on.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'I remember ______ (lock) the door before I left — I am absolutely certain.', answer: 'locking', explanation: 'remember + gerundio = recordar una acción pasada que ya ocurrió.' },
+          { prompt: 'Remember ______ (lock) the door before you leave tonight.', answer: 'to lock', explanation: 'remember + infinitivo = no olvidarse de hacer algo en el futuro.' },
+          { prompt: 'She stopped ______ (smoke) when she found out she was pregnant.', answer: 'smoking', explanation: 'stop + gerundio = dejar de hacer algo.' },
+          { prompt: 'He stopped ______ (buy) some flowers on his way home.', answer: 'to buy', explanation: 'stop + infinitivo = parar con el objetivo de hacer otra cosa.' },
+          { prompt: 'I forgot ______ (send) the email — it is still in my drafts.', answer: 'to send', explanation: 'forget + infinitivo = olvidarse de hacer una tarea.' },
+          { prompt: 'I will never forget ______ (see) the Northern Lights for the first time.', answer: 'seeing', explanation: 'forget + gerundio = una experiencia pasada memorable.' },
+          { prompt: 'She tried ______ (open) the jar but it was too tight.', answer: 'to open', explanation: 'try + infinitivo = intentar algo con esfuerzo.' },
+          { prompt: 'She tried ______ (add) more lemon juice, but the sauce still tasted wrong.', answer: 'adding', explanation: 'try + gerundio = experimentar o probar algo para ver si funciona.' },
+          { prompt: 'I regret ______ (not / take) that opportunity when I had the chance.', answer: 'not taking', explanation: 'regret + gerundio = lamentar algo que ocurrió en el pasado.' },
+          { prompt: 'I regret ______ (inform) you that your application has been rejected.', answer: 'to inform', explanation: 'regret + infinitivo = lamentar dar una noticia en este momento.' },
+          { prompt: 'He went on ______ (talk) for two hours without stopping.', answer: 'talking', explanation: 'go on + gerundio = continuar haciendo la misma actividad.' },
+          { prompt: 'After finishing school, she went on ______ (study) at a top university.', answer: 'to study', explanation: 'go on + infinitivo = pasar a una nueva etapa o actividad.' },
+          { prompt: 'Do you remember ______ (meet) her at the conference in 2019?', answer: 'meeting', explanation: 'remember + gerundio = recordar una experiencia pasada.' },
+          { prompt: 'Please remember ______ (bring) your ID to the exam tomorrow.', answer: 'to bring', explanation: 'remember + infinitivo = acordarse de hacer una tarea.' },
+          { prompt: 'He always means ______ (apologize) but never actually does it.', answer: 'to apologize', explanation: 'mean + infinitivo = tener la intención de hacer algo.' },
+          { prompt: 'Being a nurse ______ (mean / work) long and difficult shifts.', answer: 'means working', explanation: 'mean + gerundio = implicar o conllevar algo.' },
+          { prompt: 'She left without ______ (say) goodbye to anyone.', answer: 'saying', explanation: 'without es preposición y va seguido de gerundio.' },
+          { prompt: 'Before ______ (go) out, make sure you have everything.', answer: 'going', explanation: 'before es preposición y va seguido de gerundio.' },
+          { prompt: 'After ______ (finish) dinner, they went for a long walk.', answer: 'finishing', explanation: 'after es preposición y va seguido de gerundio.' },
+          { prompt: 'He passed the exam by ______ (study) for six hours every day.', answer: 'studying', explanation: 'by es preposición y va seguido de gerundio.' },
+          { prompt: 'Instead of ______ (drive), why not take the train?', answer: 'driving', explanation: 'instead of es preposición y va seguido de gerundio.' },
+          { prompt: 'She is very good at ______ (draw) portraits.', answer: 'drawing', explanation: 'be good at es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'He is afraid of ______ (fly), so he always takes the train.', answer: 'flying', explanation: 'be afraid of es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'She succeeded in ______ (get) a promotion after two years.', answer: 'getting', explanation: 'succeed in es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'We are thinking of ______ (move) to the countryside next year.', answer: 'moving', explanation: 'think of es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'He apologized for ______ (arrive) so late to the meeting.', answer: 'arriving', explanation: 'apologize for es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'She got used to ______ (live) alone after a few months.', answer: 'living', explanation: 'get used to va seguido de gerundio (to es preposición).' },
+          { prompt: 'She is interested in ______ (learn) a third language.', answer: 'learning', explanation: 'be interested in es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'He insisted on ______ (pay) for the whole dinner.', answer: 'paying', explanation: 'insist on es una estructura preposicional seguida de gerundio.' },
+          { prompt: 'She dreams of ______ (become) a concert pianist one day.', answer: 'becoming', explanation: 'dream of es una estructura preposicional seguida de gerundio.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<div class="theory-note">Gerundio (-ing): enjoy, avoid, suggest, mind, finish, keep, admit, deny, miss, risk, practise, cannot help, preposiciones. Infinitivo (to + v): want, decide, plan, manage, agree, refuse, promise, hope, expect, choose, afford, fail, tend, seem. Algunos verbos cambian de significado.</div>',
+        type: 'choice',
+        items: [
+          { prompt: 'She enjoys _____ to music every evening.', options: ['listen', 'to listen', 'listening'], answer: 'c', explanation: 'enjoy va seguido de gerundio.' },
+          { prompt: 'He decided _____ medicine at university.', options: ['to study', 'studying', 'study'], answer: 'a', explanation: 'decide va seguido de infinitivo.' },
+          { prompt: 'I remember _____ my wallet on the table yesterday.', options: ['to leave', 'leave', 'leaving'], answer: 'c', explanation: 'remember + gerundio = recordar una acción pasada.' },
+          { prompt: 'Remember _____ your homework before the lesson.', options: ['doing', 'to do', 'do'], answer: 'b', explanation: 'remember + infinitivo = no olvidarse de hacer una tarea futura.' },
+          { prompt: 'She stopped _____ for health reasons.', options: ['smoking', 'to smoke', 'smoke'], answer: 'a', explanation: 'stop + gerundio = dejar de hacer algo definitivamente.' },
+          { prompt: 'He stopped _____ some water at the petrol station.', options: ['buying', 'to buy', 'buy'], answer: 'b', explanation: 'stop + infinitivo = parar con el objetivo de hacer algo.' },
+          { prompt: 'She is afraid of _____ in front of large groups.', options: ['speak', 'to speak', 'speaking'], answer: 'c', explanation: 'be afraid of va seguido de gerundio (preposición of).' },
+          { prompt: 'They managed _____ the problem before the deadline.', options: ['solving', 'to solve', 'solve'], answer: 'b', explanation: 'manage va seguido de infinitivo.' },
+          { prompt: 'I cannot help _____ when I hear that song.', options: ['laugh', 'to laugh', 'laughing'], answer: 'c', explanation: 'cannot help va seguido de gerundio.' },
+          { prompt: 'She is looking forward to _____ you at the party.', options: ['see', 'to see', 'seeing'], answer: 'c', explanation: 'look forward to va seguido de gerundio (to es preposición).' },
+          { prompt: 'He refused _____ any of the journalists\' questions.', options: ['answering', 'answer', 'to answer'], answer: 'c', explanation: 'refuse va seguido de infinitivo.' },
+          { prompt: 'They suggested _____ a different route to avoid traffic.', options: ['to take', 'taking', 'take'], answer: 'b', explanation: 'suggest va seguido de gerundio.' },
+          { prompt: 'I forgot _____ the lights before leaving the house.', options: ['turning off', 'to turn off', 'turn off'], answer: 'b', explanation: 'forget + infinitivo = olvidarse de hacer algo.' },
+          { prompt: 'She tried _____ less salt to see if the recipe improved.', options: ['using', 'to use', 'use'], answer: 'a', explanation: 'try + gerundio = probar algo como experimento.' },
+          { prompt: 'He avoided _____ her after their argument.', options: ['to see', 'see', 'seeing'], answer: 'c', explanation: 'avoid va seguido de gerundio.' },
+          { prompt: 'She is very good at _____ complex problems.', options: ['to solve', 'solve', 'solving'], answer: 'c', explanation: 'be good at va seguido de gerundio (preposición at).' },
+          { prompt: 'I regret _____ you that the event has been cancelled.', options: ['telling', 'tell', 'to tell'], answer: 'c', explanation: 'regret + infinitivo = lamentar informar algo en este momento.' },
+          { prompt: 'Without _____ every day, you will not make progress.', options: ['to practise', 'practise', 'practising'], answer: 'c', explanation: 'without es preposición y va seguido de gerundio.' },
+          { prompt: 'He is used to _____ very early on weekdays.', options: ['getting up', 'to get up', 'get up'], answer: 'a', explanation: 'be used to va seguido de gerundio (to es preposición).' },
+          { prompt: 'After _____ the dishes, she sat down to read.', options: ['washing', 'to wash', 'wash'], answer: 'a', explanation: 'after es preposición y va seguido de gerundio.' },
+          { prompt: 'She kept _____ during the whole lecture.', options: ['talking', 'to talk', 'talk'], answer: 'a', explanation: 'keep va seguido de gerundio.' },
+          { prompt: 'He agreed _____ the next board meeting.', options: ['attending', 'to attend', 'attend'], answer: 'b', explanation: 'agree va seguido de infinitivo.' },
+          { prompt: 'I will never forget _____ the sea for the first time as a child.', options: ['to see', 'seeing', 'see'], answer: 'b', explanation: 'forget + gerundio = una experiencia pasada memorable e inolvidable.' },
+          { prompt: 'She succeeded in _____ a place at the most competitive university.', options: ['to get', 'get', 'getting'], answer: 'c', explanation: 'succeed in va seguido de gerundio (preposición in).' },
+          { prompt: 'He went on _____ even after being asked to stop several times.', options: ['talking', 'to talk', 'talk'], answer: 'a', explanation: 'go on + gerundio = continuar la misma actividad.' },
+          { prompt: 'She is interested in _____ photography as a creative hobby.', options: ['to learn', 'learn', 'learning'], answer: 'c', explanation: 'be interested in va seguido de gerundio (preposición in).' },
+          { prompt: 'They admitted _____ the expensive equipment by accident.', options: ['breaking', 'to break', 'break'], answer: 'a', explanation: 'admit va seguido de gerundio.' },
+          { prompt: 'Instead of _____ there by car, they decided to cycle.', options: ['go', 'to go', 'going'], answer: 'c', explanation: 'instead of es preposición y va seguido de gerundio.' },
+          { prompt: 'He always means _____ on time but always ends up late.', options: ['to arrive', 'arriving', 'arrive'], answer: 'a', explanation: 'mean + infinitivo = tener la intención de hacer algo.' },
+          { prompt: 'By _____ regularly, she significantly improved her fitness.', options: ['to exercise', 'exercise', 'exercising'], answer: 'c', explanation: 'by es preposición y va seguido de gerundio.' }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<div class="theory-note">Errores frecuentes: infinitivo donde toca gerundio (enjoy <strong>to read</strong> → enjoy <strong>reading</strong>), gerundio donde toca infinitivo (decide <strong>studying</strong> → decide <strong>to study</strong>), infinitivo tras preposición (without <strong>to say</strong> → without <strong>saying</strong>), confundir doble significado.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'She enjoys to read novels in her free time.', answer: 'She enjoys reading novels in her free time.', explanation: 'enjoy va seguido de gerundio: enjoys reading.' },
+          { prompt: 'He decided studying medicine at university.', answer: 'He decided to study medicine at university.', explanation: 'decide va seguido de infinitivo: decided to study.' },
+          { prompt: 'She left without to say goodbye to anyone.', answer: 'She left without saying goodbye to anyone.', explanation: 'without es preposición y va seguido de gerundio: without saying.' },
+          { prompt: 'I remember to meet her at that conference years ago.', answer: 'I remember meeting her at that conference years ago.', explanation: 'remember + gerundio = recordar algo que ya ocurrió en el pasado.' },
+          { prompt: 'He is good at to solve mathematical problems.', answer: 'He is good at solving mathematical problems.', explanation: 'be good at va seguido de gerundio (at es preposición): good at solving.' },
+          { prompt: 'She managed passing the exam on her second attempt.', answer: 'She managed to pass the exam on her second attempt.', explanation: 'manage va seguido de infinitivo: managed to pass.' },
+          { prompt: 'They avoided to see each other after the argument.', answer: 'They avoided seeing each other after the argument.', explanation: 'avoid va seguido de gerundio: avoided seeing.' },
+          { prompt: 'She is looking forward to see you next weekend.', answer: 'She is looking forward to seeing you next weekend.', explanation: 'look forward to va seguido de gerundio (to es preposición): to seeing.' },
+          { prompt: 'He kept to interrupt me during the whole presentation.', answer: 'He kept interrupting me during the whole presentation.', explanation: 'keep va seguido de gerundio: kept interrupting.' },
+          { prompt: 'She is used to get up early every morning.', answer: 'She is used to getting up early every morning.', explanation: 'be used to va seguido de gerundio (to es preposición): to getting up.' },
+          { prompt: 'I hope seeing you at the party next week.', answer: 'I hope to see you at the party next week.', explanation: 'hope va seguido de infinitivo: hope to see.' },
+          { prompt: 'He admitted to steal the money from the shop.', answer: 'He admitted stealing the money from the shop.', explanation: 'admit va seguido de gerundio: admitted stealing.' },
+          { prompt: 'She stopped to smoke last year for health reasons.', answer: 'She stopped smoking last year for health reasons.', explanation: 'stop + gerundio = dejar de hacer algo. stopped to smoke = paró para fumar, que no tiene sentido aquí.' },
+          { prompt: 'He refused answering any questions from the press.', answer: 'He refused to answer any questions from the press.', explanation: 'refuse va seguido de infinitivo: refused to answer.' },
+          { prompt: 'I cannot help to laugh every time I see that film.', answer: 'I cannot help laughing every time I see that film.', explanation: 'cannot help va seguido de gerundio: cannot help laughing.' },
+          { prompt: 'She is interested to learn a new language this year.', answer: 'She is interested in learning a new language this year.', explanation: 'be interested in va seguido de gerundio (preposición in): interested in learning.' },
+          { prompt: 'He succeeded to pass his driving test on the first try.', answer: 'He succeeded in passing his driving test on the first try.', explanation: 'succeed in va seguido de gerundio (preposición in): succeeded in passing.' },
+          { prompt: 'She forgot bringing her passport and missed the flight.', answer: 'She forgot to bring her passport and missed the flight.', explanation: 'forget + infinitivo = olvidarse de hacer algo: forgot to bring.' },
+          { prompt: 'Instead of to drive, she decided to take the bus.', answer: 'Instead of driving, she decided to take the bus.', explanation: 'instead of es preposición y va seguido de gerundio: instead of driving.' },
+          { prompt: 'He suggested to go to a different restaurant for a change.', answer: 'He suggested going to a different restaurant for a change.', explanation: 'suggest va seguido de gerundio: suggested going.' },
+          { prompt: 'After to finish dinner, they went for a long walk by the river.', answer: 'After finishing dinner, they went for a long walk by the river.', explanation: 'after es preposición y va seguido de gerundio: after finishing.' },
+          { prompt: 'She dreams to become a famous chef one day.', answer: 'She dreams of becoming a famous chef one day.', explanation: 'dream of va seguido de gerundio (preposición of): dreams of becoming.' },
+          { prompt: 'He agreed attending the meeting on Saturday morning.', answer: 'He agreed to attend the meeting on Saturday morning.', explanation: 'agree va seguido de infinitivo: agreed to attend.' },
+          { prompt: 'I will never forget to see the sunset over the mountains that evening.', answer: 'I will never forget seeing the sunset over the mountains that evening.', explanation: 'forget + gerundio = una experiencia pasada memorable: forget seeing.' },
+          { prompt: 'She finished to write her essay just before the deadline.', answer: 'She finished writing her essay just before the deadline.', explanation: 'finish va seguido de gerundio: finished writing.' },
+          { prompt: 'By to exercise regularly, she improved her health significantly.', answer: 'By exercising regularly, she improved her health significantly.', explanation: 'by es preposición y va seguido de gerundio: by exercising.' },
+          { prompt: 'She considers to apply for the new position at work.', answer: 'She considers applying for the new position at work.', explanation: 'consider va seguido de gerundio: considers applying.' },
+          { prompt: 'He practised to speak English every single day for a year.', answer: 'He practised speaking English every single day for a year.', explanation: 'practise va seguido de gerundio: practised speaking.' },
+          { prompt: 'She denied to know anything about the missing files.', answer: 'She denied knowing anything about the missing files.', explanation: 'deny va seguido de gerundio: denied knowing.' },
+          { prompt: 'He apologized for to arrive late to the important meeting.', answer: 'He apologized for arriving late to the important meeting.', explanation: 'apologize for va seguido de gerundio (preposición for): apologized for arriving.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateStatus() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      document.getElementById('timer').textContent = formatTime(elapsed);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent =
+        `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/[''""".,?!¡¿:;()\-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+
+      if (!item) return completeSection();
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(p);
+
+      if (section.theory) {
+        const t = document.createElement('div');
+        t.className = 'theory-box';
+        t.innerHTML = `<strong>Pista</strong>${section.theory}`;
+        questionArea.appendChild(t);
+      }
+
+      if (section.type === 'choice') {
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const id = `opt-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = id;
+          radio.className = 'choice-input';
+          const span = document.createElement('span');
+          span.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+          label.appendChild(radio);
+          label.appendChild(span);
+          optionsDiv.appendChild(label);
+        });
+        questionArea.appendChild(optionsDiv);
+      } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'exercise-input';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+      document.getElementById('next-button').textContent = isLast ? 'Comprobar y terminar' : 'Comprobar y siguiente';
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = input ? normalizeText(input.value) : '';
+        }
+
+        const answers = Array.isArray(item.answer) ? item.answer : [item.answer];
+        let correct = false;
+        if (section.type === 'choice') {
+          correct = answers.includes(userAnswer);
+        } else {
+          correct = answers.some(a => normalizeText(a) === userAnswer);
+        }
+
+        const explanation = item.explanation || '';
+        let correctDisplay;
+        if (section.type === 'choice') {
+          correctDisplay = answers.map(a => `${a}) ${item.options[a.charCodeAt(0) - 97]}`).join(' / ');
+        } else {
+          correctDisplay = answers.join(' / ');
+        }
+
+        if (correct) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          const plural = answers.length > 1 ? 's válidas' : ' correcta';
+          feedback.textContent = `Incorrecto. Respuesta${plural}: "${correctDisplay}". -5 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLast ? 'Finalizar sección' : 'Siguiente pregunta';
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLast) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      const sectionLen = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLen * 3 - elapsed * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+
+      const summary = document.getElementById('section-summary');
+      summary.textContent = `Sección finalizada. Puntos: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsed)}. Bonificación rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>

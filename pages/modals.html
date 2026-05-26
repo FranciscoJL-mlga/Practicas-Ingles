@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modal verbs | Prácticas de Inglés</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark">EI</span>
+        <strong>Prácticas de Inglés</strong>
+      </div>
+      <nav class="site-nav">
+        <a href="../index.html">← Volver</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="hero-section">
+      <div class="hero-copy">
+        <span class="eyebrow">Modal verbs</span>
+        <h1>Modal verbs</h1>
+        <p>Practica el uso de los verbos modales simples y sus formas perfectas. Lee la teoría y elige un ejercicio.</p>
+        <div class="hero-theory-group">
+          <div class="theory-box">
+            <strong>Modales simples — usos</strong>
+            <table class="theory-table">
+              <thead><tr><th>Modal</th><th>Uso</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>must / have to</td><td>Obligación</td><td>You <span class="change-mark">must</span> wear a seatbelt</td></tr>
+                <tr><td>must not</td><td>Prohibición</td><td>You <span class="change-mark">must not</span> smoke here</td></tr>
+                <tr><td>do not have to</td><td>No es necesario</td><td>You <span class="change-mark">do not have to</span> come</td></tr>
+                <tr><td>should / ought to</td><td>Consejo</td><td>You <span class="change-mark">should</span> see a doctor</td></tr>
+                <tr><td>can / could</td><td>Habilidad presente / pasado</td><td>She <span class="change-mark">could</span> swim at five</td></tr>
+                <tr><td>may / might</td><td>Posibilidad</td><td>It <span class="change-mark">might</span> rain tomorrow</td></tr>
+                <tr><td>must</td><td>Deducción positiva</td><td>He <span class="change-mark">must</span> be tired</td></tr>
+                <tr><td>cannot</td><td>Deducción negativa</td><td>She <span class="change-mark">cannot</span> be home</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="theory-box">
+            <strong>Modales perfectos — forma + significado</strong>
+            <table class="theory-table">
+              <thead><tr><th>Forma</th><th>Significado</th><th>Ejemplo</th></tr></thead>
+              <tbody>
+                <tr><td>must have + p.p.</td><td>Deducción pasada (segura)</td><td>She <span class="change-mark">must have left</span> already</td></tr>
+                <tr><td>cannot have + p.p.</td><td>Deducción negativa pasada</td><td>He <span class="change-mark">cannot have done</span> it</td></tr>
+                <tr><td>should have + p.p.</td><td>Crítica o arrepentimiento</td><td>You <span class="change-mark">should have called</span></td></tr>
+                <tr><td>could have + p.p.</td><td>Posibilidad pasada no realizada</td><td>I <span class="change-mark">could have helped</span></td></tr>
+                <tr><td>might have + p.p.</td><td>Posibilidad pasada débil</td><td>They <span class="change-mark">might have forgotten</span></td></tr>
+                <tr><td>need not have + p.p.</td><td>Acción pasada innecesaria</td><td>You <span class="change-mark">need not have bought</span> flowers</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <a class="primary-button" href="../index.html">Volver al menú</a>
+      </div>
+    </section>
+
+    <section class="quiz-panel">
+      <div class="quiz-status">
+        <div>
+          <span>Tiempo</span>
+          <strong id="timer">00:00</strong>
+        </div>
+        <div>
+          <span>Puntos</span>
+          <strong id="total-score">0</strong>
+        </div>
+        <div>
+          <span>Progreso</span>
+          <strong id="progress">0 / 4 secciones</strong>
+        </div>
+      </div>
+      <div class="quiz-actions">
+        <button class="submit-button" id="reset-quiz" type="button">Reiniciar quiz</button>
+        <p class="quiz-info">Cada respuesta correcta suma puntos y las incorrectas restan. El tiempo también cuenta en la puntuación final.</p>
+      </div>
+      <div id="final-summary" class="exercise-summary" aria-live="polite"></div>
+    </section>
+
+    <section id="start-screen" class="exercise-section">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Tipos de ejercicio</span>
+          <h2>Elige uno para comenzar</h2>
+        </div>
+      </div>
+      <div class="section-chooser" id="section-chooser"></div>
+    </section>
+
+    <section id="quiz-screen" class="exercise-section hidden">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow" id="current-type-label">Ejercicio</span>
+          <h2 id="current-question-title">Responde una pregunta a la vez</h2>
+        </div>
+      </div>
+      <div id="question-area" class="exercise-form"></div>
+      <div class="exercise-actions">
+        <button class="submit-button" id="next-button" type="button">Comprobar y siguiente</button>
+        <button class="submit-button secondary hidden" id="finish-button" type="button">Finalizar sección</button>
+      </div>
+      <div id="question-feedback" class="exercise-feedback" aria-live="polite"></div>
+      <div id="section-summary" class="exercise-summary"></div>
+      <div class="exercise-actions">
+        <button class="submit-button hidden" id="choose-another" type="button">Elegir otro ejercicio</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const exerciseSections = {
+      gap: {
+        label: 'Modales simples — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Modal</th><th>Uso</th></tr></thead><tbody><tr><td>must / have to</td><td>Obligación</td></tr><tr><td>must not</td><td>Prohibición</td></tr><tr><td>do not have to</td><td>No es necesario</td></tr><tr><td>should / ought to</td><td>Consejo</td></tr><tr><td>can / could</td><td>Habilidad presente / pasado</td></tr><tr><td>may / might</td><td>Posibilidad incierta</td></tr><tr><td>must</td><td>Deducción positiva (segura)</td></tr><tr><td>cannot</td><td>Deducción negativa (imposible)</td></tr></tbody></table>',
+        type: 'text',
+        items: [
+          { prompt: 'You ______ wear a seatbelt. It is the law.', answer: ['must', 'have to'], explanation: 'must o have to expresan obligación impuesta por ley o norma.' },
+          { prompt: 'She ______ speak three languages when she was a child.', answer: 'could', explanation: 'could expresa habilidad en el pasado.' },
+          { prompt: 'He ______ be the manager — he is only sixteen years old.', answer: ['cannot', "can't"], explanation: 'cannot expresa deducción negativa: es imposible basándose en la evidencia.' },
+          { prompt: 'It ______ rain this afternoon — the sky is getting very dark.', answer: ['might', 'may', 'could'], explanation: 'might / may / could expresan posibilidad incierta sobre el futuro.' },
+          { prompt: 'You ______ smoke in this building. It is strictly forbidden.', answer: ['must not', "mustn't"], explanation: 'must not expresa prohibición.' },
+          { prompt: 'She ______ be exhausted — she has not slept in two days.', answer: 'must', explanation: 'must expresa deducción positiva segura basada en evidencia.' },
+          { prompt: 'You ______ see a doctor about that cough. It sounds serious.', answer: ['should', 'ought to'], explanation: 'should / ought to expresan consejo o recomendación.' },
+          { prompt: 'You ______ book tickets in advance — there are plenty available.', answer: ['do not have to', "don't have to", 'need not', "needn't"], explanation: 'do not have to / need not expresan falta de obligación.' },
+          { prompt: 'I ______ drive when I was seventeen — I had not passed my test.', answer: ['could not', "couldn't"], explanation: 'could not expresa incapacidad en el pasado.' },
+          { prompt: 'That ______ be Tom at the door — I can hear his voice clearly.', answer: 'must', explanation: 'must expresa deducción positiva segura.' },
+          { prompt: '______ you like a cup of tea or coffee?', answer: 'Would', explanation: 'Would you like...? es la forma estándar de ofrecer algo cortésmente.' },
+          { prompt: 'Students ______ use their phones during the exam.', answer: ['must not', "mustn't", 'cannot', "can't"], explanation: 'must not / cannot expresan prohibición.' },
+          { prompt: '______ we go for a walk? The weather is lovely.', answer: ['Shall', 'Should'], explanation: 'Shall / Should se usan para hacer sugerencias.' },
+          { prompt: 'You ______ better call her now or she will be upset.', answer: 'had', explanation: 'had better + infinitivo expresa un consejo con advertencia implícita.' },
+          { prompt: 'She ______ be at home — her car is not outside and the lights are off.', answer: ['cannot', "can't"], explanation: 'cannot expresa deducción negativa basada en evidencia.' },
+          { prompt: 'I ______ swim very well when I was five years old.', answer: 'could', explanation: 'could expresa habilidad en el pasado.' },
+          { prompt: '______ you open the window, please? It is very warm in here.', answer: ['Could', 'Can', 'Would', 'Will'], explanation: 'Could / Would son las formas más corteses para hacer una petición.' },
+          { prompt: 'He ______ be right about that — it is possible but not certain.', answer: ['might', 'may', 'could'], explanation: 'might / may / could expresan posibilidad incierta en el presente.' },
+          { prompt: 'We ______ hurry — we have plenty of time before the train.', answer: ['do not have to', "don't have to", 'need not', "needn't"], explanation: 'do not have to / need not indican que no es necesario.' },
+          { prompt: 'She ______ lift heavy objects after her back operation.', answer: ['must not', "mustn't", 'should not', "shouldn't"], explanation: 'must not / should not expresan prohibición o consejo médico fuerte.' },
+          { prompt: 'He ______ speak to people like that. It is extremely rude.', answer: ['should not', "shouldn't", 'must not', "mustn't"], explanation: 'should not expresa consejo negativo; must not añade mayor fuerza.' },
+          { prompt: 'She ______ to be famous one day — she is incredibly talented.', answer: 'ought', explanation: 'ought to expresa expectativa o consejo. Nota: ought siempre va seguido de to.' },
+          { prompt: '______ I help you with anything?', answer: ['Can', 'May', 'Shall'], explanation: 'Can / May / Shall se usan para ofrecer ayuda.' },
+          { prompt: 'He ______ be Spanish — he speaks with a perfect accent and knows every custom.', answer: 'must', explanation: 'must expresa deducción positiva muy segura.' },
+          { prompt: 'You ______ eat more fruit and vegetables. It is very good for your health.', answer: ['should', 'ought to'], explanation: 'should / ought to expresan recomendación.' },
+          { prompt: 'She ______ have the answer — she has read everything about this topic.', answer: ['must', 'should'], explanation: 'must (deducción segura) o should (expectativa razonable).' },
+          { prompt: 'They ______ be home by now — their flight landed three hours ago.', answer: 'must', explanation: 'must expresa deducción positiva basada en evidencia.' },
+          { prompt: 'You ______ worry so much. Everything will be fine.', answer: ['should not', "shouldn't"], explanation: 'should not expresa consejo negativo.' },
+          { prompt: 'He ______ be the winner — he clearly cheated during the race.', answer: ['cannot', "can't"], explanation: 'cannot expresa deducción negativa fuerte.' },
+          { prompt: '______ I sit here? Is this seat taken?', answer: ['Can', 'Could', 'May'], explanation: 'Can / Could / May se usan para pedir permiso. May es la forma más formal.' }
+        ]
+      },
+      gapPerfect: {
+        label: 'Modales perfectos — completar',
+        theory: '<table class="theory-table"><thead><tr><th>Forma</th><th>Significado</th></tr></thead><tbody><tr><td>must have + p.p.</td><td>Deducción pasada segura</td></tr><tr><td>cannot have + p.p.</td><td>Deducción negativa pasada</td></tr><tr><td>should have + p.p.</td><td>Crítica o arrepentimiento</td></tr><tr><td>could have + p.p.</td><td>Posibilidad no realizada</td></tr><tr><td>might have + p.p.</td><td>Posibilidad pasada débil</td></tr><tr><td>need not have + p.p.</td><td>Acción pasada innecesaria</td></tr></tbody></table><div class="theory-note">Estructura: <strong>modal + have + past participle</strong>. El modal nunca cambia de forma.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'She ______ (must / leave) already — her bag is gone.', answer: 'must have left', explanation: 'must have + participio para deducción positiva sobre el pasado.' },
+          { prompt: 'You ______ (should / call) me — I was very worried about you.', answer: 'should have called', explanation: 'should have + participio para criticar una acción no realizada.' },
+          { prompt: 'He ______ (cannot / be) at the party — he was in another country.', answer: 'cannot have been', explanation: 'cannot have + participio para deducción negativa sobre el pasado.' },
+          { prompt: 'They ______ (might / forget) about the meeting — nobody confirmed it.', answer: 'might have forgotten', explanation: 'might have + participio para posibilidad débil sobre el pasado.' },
+          { prompt: 'You ______ (need not / bring) food — we had more than enough.', answer: 'need not have brought', explanation: 'need not have + participio indica que la acción pasada fue innecesaria.' },
+          { prompt: 'I ______ (could / help) you, but I did not know you needed it.', answer: 'could have helped', explanation: 'could have + participio para una posibilidad pasada que no se realizó.' },
+          { prompt: 'She ______ (must / work) very hard — she looks completely drained.', answer: 'must have worked', explanation: 'must have + participio para deducción positiva segura sobre el pasado.' },
+          { prompt: 'You ______ (should not / eat) so much at dinner — you feel ill now.', answer: ['should not have eaten', "shouldn't have eaten"], explanation: 'should not have + participio para criticar una acción realizada en el pasado.' },
+          { prompt: 'He ______ (cannot / take) the money — he is always completely honest.', answer: 'cannot have taken', explanation: 'cannot have + participio para deducción negativa sobre el pasado.' },
+          { prompt: 'They ______ (might / miss) the train — I am not sure what happened.', answer: 'might have missed', explanation: 'might have + participio para posibilidad incierta sobre el pasado.' },
+          { prompt: 'I ______ (should / study) harder for the test — I am not happy with my mark.', answer: 'should have studied', explanation: 'should have + participio expresa arrepentimiento sobre el pasado.' },
+          { prompt: 'She ______ (could / win) the competition if she had tried harder.', answer: 'could have won', explanation: 'could have + participio para posibilidad pasada no aprovechada.' },
+          { prompt: 'You ______ (need not / come) all this way — we sorted it out by phone.', answer: 'need not have come', explanation: 'need not have + participio indica que la acción fue innecesaria.' },
+          { prompt: 'He ______ (must / see) her — he knows every detail of her life.', answer: 'must have seen', explanation: 'must have + participio para deducción segura sobre el pasado.' },
+          { prompt: 'They ______ (cannot / hear) us — they were standing far away.', answer: 'cannot have heard', explanation: 'cannot have + participio para deducción negativa sobre el pasado.' },
+          { prompt: 'I ______ (could / go) to the concert, but I decided to stay home.', answer: 'could have gone', explanation: 'could have + participio para una opción pasada que no se tomó.' },
+          { prompt: 'She ______ (should / tell) the truth from the very beginning.', answer: 'should have told', explanation: 'should have + participio para criticar que no se hizo algo.' },
+          { prompt: 'You ______ (might / leave) your keys at the office — check there first.', answer: 'might have left', explanation: 'might have + participio para una posibilidad pasada débil.' },
+          { prompt: 'He ______ (must / walk) here — he is completely out of breath.', answer: 'must have walked', explanation: 'must have + participio para deducción positiva basada en evidencia.' },
+          { prompt: 'You ______ (should not / say) that to her — she was very upset.', answer: ['should not have said', "shouldn't have said"], explanation: 'should not have + participio para criticar una acción realizada.' },
+          { prompt: 'She ______ (cannot / finish) the report already — it was enormous.', answer: 'cannot have finished', explanation: 'cannot have + participio para deducción negativa sobre el pasado.' },
+          { prompt: 'They ______ (could / avoid) the accident if they had been more careful.', answer: 'could have avoided', explanation: 'could have + participio para posibilidad pasada no realizada.' },
+          { prompt: 'I ______ (need not / prepare) so much food — half of it went to waste.', answer: 'need not have prepared', explanation: 'need not have + participio indica que la acción fue innecesaria.' },
+          { prompt: 'He ______ (must / travel) a lot — he knows every city in Europe.', answer: 'must have travelled', explanation: 'must have + participio para deducción segura sobre el pasado.' },
+          { prompt: 'You ______ (might / misunderstand) what I said — let me explain again.', answer: 'might have misunderstood', explanation: 'might have + participio para posibilidad débil sobre el pasado.' },
+          { prompt: 'She ______ (should / save) more money when she had the chance.', answer: 'should have saved', explanation: 'should have + participio expresa arrepentimiento o crítica.' },
+          { prompt: 'He ______ (cannot / send) that email — he does not have your address.', answer: 'cannot have sent', explanation: 'cannot have + participio para deducción negativa sobre el pasado.' },
+          { prompt: 'I ______ (could / do) better on the exam if I had slept more.', answer: 'could have done', explanation: 'could have + participio para posibilidad pasada no realizada.' },
+          { prompt: 'You ______ (should not / drive) so fast on that road — it was very dangerous.', answer: ['should not have driven', "shouldn't have driven"], explanation: 'should not have + participio para criticar una acción pasada.' },
+          { prompt: 'They ______ (must / enjoy) the trip — they are still talking about it.', answer: 'must have enjoyed', explanation: 'must have + participio para deducción positiva basada en evidencia.' }
+        ]
+      },
+      choice: {
+        label: 'Opción múltiple',
+        theory: '<div class="theory-note">Clave: <strong>must</strong> = obligación o deducción segura · <strong>must not</strong> = prohibición · <strong>do not have to</strong> = no es necesario · <strong>could</strong> = habilidad pasada · <strong>might / may</strong> = posibilidad incierta · Modales perfectos: <strong>modal + have + p.p.</strong></div>',
+        type: 'choice',
+        items: [
+          { prompt: 'You _____ wear a seatbelt. It is the law.', options: ['should', 'must', 'might'], answer: 'b', explanation: 'must expresa obligación impuesta por la ley.' },
+          { prompt: 'He _____ be at home — the lights are all off and his car is gone.', options: ['must', 'cannot', 'should'], answer: 'b', explanation: 'cannot expresa deducción negativa basada en la evidencia.' },
+          { prompt: 'It _____ rain tomorrow — there is a chance but it is not certain.', options: ['must', 'might', 'should'], answer: 'b', explanation: 'might expresa posibilidad incierta.' },
+          { prompt: 'You _____ come to the meeting — it is completely optional.', options: ['must not', 'do not have to', 'should not'], answer: 'b', explanation: 'do not have to expresa falta de obligación, no prohibición.' },
+          { prompt: 'She _____ speak five languages when she was young.', options: ['can', 'could', 'must'], answer: 'b', explanation: 'could expresa habilidad en el pasado.' },
+          { prompt: 'You _____ have told me! I was completely in the dark.', options: ['should', 'might', 'must'], answer: 'a', explanation: 'should have + p.p. expresa crítica por una acción no realizada.' },
+          { prompt: 'She _____ be the director — she is only twenty years old.', options: ['must', 'cannot', 'should'], answer: 'b', explanation: 'cannot expresa deducción negativa.' },
+          { prompt: '_____ I use your charger? Mine is broken.', options: ['Must', 'Shall', 'Could'], answer: 'c', explanation: 'Could es la forma más cortés para pedir permiso o un favor.' },
+          { prompt: 'He _____ be exhausted — he has not slept in three days.', options: ['should', 'might', 'must'], answer: 'c', explanation: 'must expresa deducción positiva fuerte.' },
+          { prompt: 'You _____ smoke in here. It is not allowed under any circumstances.', options: ['must not', 'do not have to', 'should'], answer: 'a', explanation: 'must not expresa prohibición.' },
+          { prompt: 'She _____ have forgotten — she never forgets anything.', options: ['must', 'cannot', 'should'], answer: 'b', explanation: 'cannot have + p.p. expresa deducción negativa sobre el pasado.' },
+          { prompt: 'I _____ drive until I was eighteen — I did not have a licence.', options: ['can', 'could not', 'must not'], answer: 'b', explanation: 'could not expresa incapacidad en el pasado.' },
+          { prompt: '_____ we go for a pizza after class?', options: ['Must', 'Shall', 'Would'], answer: 'b', explanation: 'Shall se usa para hacer sugerencias.' },
+          { prompt: 'You _____ rest more. You really do not look well.', options: ['should', 'might', 'could'], answer: 'a', explanation: 'should expresa consejo o recomendación.' },
+          { prompt: 'He _____ have taken the money — he was the only one in the room.', options: ['should', 'must', 'cannot'], answer: 'b', explanation: 'must have + p.p. expresa deducción positiva sobre el pasado.' },
+          { prompt: 'You _____ have bought flowers — we told you not to bring anything.', options: ['must not', 'need not have', 'should not'], answer: 'b', explanation: 'need not have + p.p. indica que la acción pasada fue innecesaria.' },
+          { prompt: 'You _____ speak to people like that. It is very rude and hurtful.', options: ['should not', 'do not have to', 'might not'], answer: 'a', explanation: 'should not expresa consejo negativo fuerte.' },
+          { prompt: 'She _____ to revise her essay. It has several errors.', options: ['ought', 'should', 'must'], answer: 'a', explanation: 'ought to expresa consejo. Recuerda: ought siempre lleva to.' },
+          { prompt: 'He _____ have studied harder — he is very disappointed with his results.', options: ['should', 'might', 'must'], answer: 'a', explanation: 'should have + p.p. expresa arrepentimiento.' },
+          { prompt: 'This _____ be the right address — the name and number match exactly.', options: ['should', 'might', 'must'], answer: 'c', explanation: 'must expresa deducción positiva muy segura.' },
+          { prompt: '_____ you like some help with that?', options: ['Shall', 'Would', 'Must'], answer: 'b', explanation: 'Would you like...? es la forma estándar de ofrecer ayuda.' },
+          { prompt: 'They _____ have won if they had played at their best.', options: ['must', 'could', 'should'], answer: 'b', explanation: 'could have + p.p. expresa posibilidad pasada no realizada.' },
+          { prompt: 'She _____ be lying — her story has too many contradictions.', options: ['must', 'might', 'cannot'], answer: 'a', explanation: 'must expresa deducción positiva fuerte basada en evidencia.' },
+          { prompt: 'You _____ have told me earlier — I am quite annoyed.', options: ['could', 'should', 'might'], answer: 'b', explanation: 'should have + p.p. expresa crítica por no haber hecho algo.' },
+          { prompt: 'I did not know he _____ play the violin so well.', options: ['can', 'could', 'must'], answer: 'b', explanation: 'could expresa habilidad en el pasado (referida desde un verbo en pasado).' },
+          { prompt: 'She _____ have finished the whole report already — it was enormous.', options: ['must', 'should', 'cannot'], answer: 'c', explanation: 'cannot have + p.p. expresa deducción negativa sobre el pasado.' },
+          { prompt: 'Do not panic. You _____ worry so much — it is not good for you.', options: ['must not', 'should not', 'could not'], answer: 'b', explanation: 'should not expresa consejo negativo.' },
+          { prompt: 'He _____ have read the instructions — he did absolutely everything wrong.', options: ['could', 'must', 'cannot'], answer: 'c', explanation: 'cannot have + p.p. expresa deducción negativa sobre el pasado.' },
+          { prompt: 'She _____ come tomorrow — she mentioned it but was not certain.', options: ['will', 'might', 'must'], answer: 'b', explanation: 'might expresa posibilidad incierta sobre el futuro.' },
+          { prompt: 'You _____ eat fresh fruit every day. Your diet is very poor.', options: ['could', 'should', 'can'], answer: 'b', explanation: 'should expresa consejo o recomendación.' }
+        ]
+      },
+      error: {
+        label: 'Corregir el error',
+        theory: '<div class="theory-note">Errores frecuentes: <strong>to</strong> después de modales (salvo <em>ought to</em> y <em>have to</em>), confundir <strong>must not</strong> (prohibición) con <strong>do not have to</strong> (no necesario), olvidar <strong>have</strong> en el modal perfecto, y usar el participio incorrecto.</div>',
+        type: 'text',
+        items: [
+          { prompt: 'She can to swim very well.', answer: 'She can swim very well.', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'You must not come — it is not necessary.', answer: 'You do not have to come — it is not necessary.', explanation: 'must not = prohibición. do not have to = no es necesario. Son muy diferentes.' },
+          { prompt: 'She must arrived already — her bag is here.', answer: 'She must have arrived already — her bag is here.', explanation: 'El modal perfecto requiere have entre el modal y el participio: must have arrived.' },
+          { prompt: 'He should studied more for the exam.', answer: 'He should have studied more for the exam.', explanation: 'El modal perfecto necesita have: should have studied.' },
+          { prompt: 'I could not to speak English before I took classes.', answer: 'I could not speak English before I took classes.', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'He can be tired — he just worked twelve hours straight.', answer: 'He must be tired — he just worked twelve hours straight.', explanation: 'Para una deducción segura basada en evidencia se usa must, no can.' },
+          { prompt: 'She might to be at the office right now.', answer: 'She might be at the office right now.', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'He must has finished the report by now.', answer: 'He must have finished the report by now.', explanation: 'Después del modal se usa have (infinitivo), no has.' },
+          { prompt: 'She should have knew the answer — she is an expert.', answer: 'She should have known the answer — she is an expert.', explanation: 'El participio pasado de know es known, no knew.' },
+          { prompt: 'You ought study harder if you want to pass.', answer: 'You ought to study harder if you want to pass.', explanation: 'ought siempre va seguido de to + infinitivo: ought to study.' },
+          { prompt: 'She had better to leave now or she will miss the bus.', answer: 'She had better leave now or she will miss the bus.', explanation: 'had better va seguido de infinitivo sin to.' },
+          { prompt: 'They could have went to Paris but chose London instead.', answer: 'They could have gone to Paris but chose London instead.', explanation: 'El participio pasado de go es gone, no went.' },
+          { prompt: 'Can you to help me carry these boxes, please?', answer: 'Can you help me carry these boxes, please?', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'You must not pay — entry is completely free today.', answer: 'You do not have to pay — entry is completely free today.', explanation: 'must not = prohibición. do not have to = no es necesario.' },
+          { prompt: 'She must have took the wrong train.', answer: 'She must have taken the wrong train.', explanation: 'El participio pasado de take es taken, no took.' },
+          { prompt: 'This cannot been her coat — it is the wrong size.', answer: 'This cannot be her coat — it is the wrong size.', explanation: 'Para deducción presente se usa cannot be. cannot been no existe.' },
+          { prompt: 'He might to have forgotten about the meeting.', answer: 'He might have forgotten about the meeting.', explanation: 'Los verbos modales van seguidos de infinitivo sin to: might have forgotten.' },
+          { prompt: 'You should not have ate the whole pizza by yourself.', answer: 'You should not have eaten the whole pizza by yourself.', explanation: 'El participio pasado de eat es eaten, no ate.' },
+          { prompt: 'She may to join us for dinner this evening.', answer: 'She may join us for dinner this evening.', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'They should have went home earlier to avoid the traffic.', answer: 'They should have gone home earlier to avoid the traffic.', explanation: 'El participio pasado de go es gone, no went.' },
+          { prompt: 'He can be the winner — there is absolutely no doubt about it.', answer: 'He must be the winner — there is absolutely no doubt about it.', explanation: 'Para deducción positiva segura se usa must, no can.' },
+          { prompt: 'You need not to bring anything — we have everything we need.', answer: 'You need not bring anything — we have everything we need.', explanation: 'Cuando need se usa como modal, va seguido de infinitivo sin to.' },
+          { prompt: 'She might have knew about the surprise party in advance.', answer: 'She might have known about the surprise party in advance.', explanation: 'El participio pasado de know es known, no knew.' },
+          { prompt: 'He should not have drived so fast on that wet road.', answer: 'He should not have driven so fast on that wet road.', explanation: 'El participio pasado de drive es driven, no drived.' },
+          { prompt: 'She can swim since age five — she goes every week.', answer: 'She could swim since age five — she has gone every week.', explanation: 'Habilidad referida al pasado usa could, y la acción continua usa present perfect.' },
+          { prompt: 'She must to be tired after that long journey.', answer: 'She must be tired after that long journey.', explanation: 'Los verbos modales van seguidos de infinitivo sin to.' },
+          { prompt: 'They could have avoid the accident if they had been more careful.', answer: 'They could have avoided the accident if they had been more careful.', explanation: 'Después de could have se necesita el participio pasado: avoided.' },
+          { prompt: 'He ought not study tonight — the exam has been cancelled.', answer: 'He ought not to study tonight — the exam has been cancelled.', explanation: 'ought lleva to en todas sus formas, incluyendo la negativa: ought not to.' },
+          { prompt: 'She was able to swam before she was five years old.', answer: 'She was able to swim before she was five years old.', explanation: 'Después de able to se usa el infinitivo sin to: swim, no swam.' },
+          { prompt: 'You could not have saw that — it was completely pitch dark.', answer: 'You could not have seen that — it was completely pitch dark.', explanation: 'El participio pasado de see es seen, no saw.' }
+        ]
+      }
+    };
+
+    const quizState = {
+      totalScore: 0,
+      completedSections: 0,
+      sectionResults: {},
+      currentSection: null,
+      currentIndex: 0,
+      currentSectionScore: 0,
+      sectionWrong: 0,
+      sectionStartTime: 0,
+      totalTimeSeconds: 0,
+      questionChecked: false,
+      shuffledItems: []
+    };
+
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function updateStatus() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      document.getElementById('timer').textContent = formatTime(elapsed);
+      document.getElementById('total-score').textContent = quizState.totalScore;
+      document.getElementById('progress').textContent =
+        `${quizState.completedSections} / ${Object.keys(exerciseSections).length} secciones`;
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      quizState.sectionStartTime = Date.now();
+      timerInterval = setInterval(updateStatus, 500);
+      updateStatus();
+    }
+
+    function stopTimer() {
+      if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+      if (quizState.sectionStartTime) {
+        quizState.totalTimeSeconds += Math.floor((Date.now() - quizState.sectionStartTime) / 1000);
+        quizState.sectionStartTime = 0;
+      }
+    }
+
+    function normalizeText(text) {
+      return text
+        .toString()
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .replace(/[''""".,?!¡¿:;()\-]/g, '')
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ');
+    }
+
+    function shuffleArray(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function showStartScreen() {
+      document.getElementById('start-screen').classList.remove('hidden');
+      document.getElementById('quiz-screen').classList.add('hidden');
+      document.getElementById('final-summary').textContent = '';
+      document.getElementById('section-summary').textContent = '';
+      document.getElementById('question-feedback').textContent = '';
+      document.getElementById('choose-another').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').textContent = 'Comprobar y siguiente';
+    }
+
+    function startSection(sectionKey) {
+      quizState.currentSection = sectionKey;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('quiz-screen').classList.remove('hidden');
+      document.getElementById('current-type-label').textContent = exerciseSections[sectionKey].label;
+      document.getElementById('current-question-title').textContent = 'Responde una pregunta a la vez';
+      document.getElementById('finish-button').classList.add('hidden');
+      document.getElementById('next-button').classList.remove('hidden');
+      quizState.shuffledItems = shuffleArray(exerciseSections[sectionKey].items);
+      startTimer();
+      showCurrentQuestion();
+    }
+
+    function showCurrentQuestion() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const questionArea = document.getElementById('question-area');
+      const feedback = document.getElementById('question-feedback');
+
+      questionArea.innerHTML = '';
+      document.getElementById('section-summary').textContent = '';
+      feedback.textContent = '';
+      feedback.className = 'exercise-feedback';
+
+      if (!item) return completeSection();
+
+      const p = document.createElement('p');
+      p.className = 'question-prompt';
+      p.textContent = `${quizState.currentIndex + 1}. ${item.prompt}`;
+      questionArea.appendChild(p);
+
+      if (section.theory) {
+        const t = document.createElement('div');
+        t.className = 'theory-box';
+        t.innerHTML = `<strong>Pista</strong>${section.theory}`;
+        questionArea.appendChild(t);
+      }
+
+      if (section.type === 'choice') {
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'choice-options';
+        item.options.forEach((option, index) => {
+          const id = `opt-${quizState.currentIndex}-${index}`;
+          const label = document.createElement('label');
+          label.className = 'choice-label';
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.name = 'answer';
+          radio.value = String.fromCharCode(97 + index);
+          radio.id = id;
+          radio.className = 'choice-input';
+          const span = document.createElement('span');
+          span.textContent = `${String.fromCharCode(97 + index)}) ${option}`;
+          label.appendChild(radio);
+          label.appendChild(span);
+          optionsDiv.appendChild(label);
+        });
+        questionArea.appendChild(optionsDiv);
+      } else {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'exercise-input';
+        input.id = 'answer-input';
+        input.autocomplete = 'off';
+        input.placeholder = 'Escribe tu respuesta aquí';
+        questionArea.appendChild(input);
+        input.focus();
+      }
+
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+      document.getElementById('next-button').textContent = isLast ? 'Comprobar y terminar' : 'Comprobar y siguiente';
+      document.getElementById('finish-button').classList.add('hidden');
+    }
+
+    function evaluateAnswer() {
+      const sectionKey = quizState.currentSection;
+      const section = exerciseSections[sectionKey];
+      const item = quizState.shuffledItems[quizState.currentIndex];
+      const feedback = document.getElementById('question-feedback');
+      const nextButton = document.getElementById('next-button');
+      const isLast = quizState.currentIndex === quizState.shuffledItems.length - 1;
+
+      if (!quizState.questionChecked) {
+        let userAnswer = '';
+        if (section.type === 'choice') {
+          const selected = document.querySelector('input[name="answer"]:checked');
+          userAnswer = selected ? selected.value : '';
+        } else {
+          const input = document.getElementById('answer-input');
+          userAnswer = input ? normalizeText(input.value) : '';
+        }
+
+        const answers = Array.isArray(item.answer) ? item.answer : [item.answer];
+        let correct = false;
+        if (section.type === 'choice') {
+          correct = answers.includes(userAnswer);
+        } else {
+          correct = answers.some(a => normalizeText(a) === userAnswer);
+        }
+
+        const explanation = item.explanation || '';
+        let correctDisplay;
+        if (section.type === 'choice') {
+          correctDisplay = answers.map(a => `${a}) ${item.options[a.charCodeAt(0) - 97]}`).join(' / ');
+        } else {
+          correctDisplay = answers.join(' / ');
+        }
+
+        if (correct) {
+          quizState.totalScore += 12;
+          quizState.currentSectionScore += 12;
+          feedback.textContent = `Correcto. +12 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback correct visible';
+        } else {
+          quizState.totalScore -= 5;
+          quizState.sectionWrong += 1;
+          const plural = answers.length > 1 ? 's válidas' : ' correcta';
+          feedback.textContent = `Incorrecto. Respuesta${plural}: "${correctDisplay}". -5 puntos. ${explanation}`;
+          feedback.className = 'exercise-feedback wrong visible';
+        }
+
+        quizState.questionChecked = true;
+        nextButton.textContent = isLast ? 'Finalizar sección' : 'Siguiente pregunta';
+        updateStatus();
+        return;
+      }
+
+      quizState.currentIndex += 1;
+      quizState.questionChecked = false;
+      if (isLast) {
+        completeSection();
+      } else {
+        showCurrentQuestion();
+      }
+    }
+
+    function completeSection() {
+      const elapsed = quizState.sectionStartTime
+        ? Math.floor((Date.now() - quizState.sectionStartTime) / 1000)
+        : 0;
+      const sectionLen = quizState.shuffledItems.length;
+      const timeBonus = Math.max(0, Math.round(sectionLen * 3 - elapsed * 0.5));
+      stopTimer();
+      quizState.totalScore += timeBonus;
+      quizState.completedSections += 1;
+      quizState.sectionResults[quizState.currentSection] = true;
+
+      const summary = document.getElementById('section-summary');
+      summary.textContent = `Sección finalizada. Puntos: ${quizState.currentSectionScore}. Tiempo: ${formatTime(elapsed)}. Bonificación rapidez: +${timeBonus}. Errores: ${quizState.sectionWrong}.`;
+
+      document.getElementById('choose-another').classList.remove('hidden');
+      document.getElementById('next-button').classList.add('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      updateStatus();
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        const stored = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const sec = quizState.currentSection;
+        if (!stored[sec]) stored[sec] = { best: 0, attempts: 0 };
+        if (quizState.currentSectionScore > stored[sec].best) stored[sec].best = quizState.currentSectionScore;
+        stored[sec].attempts += 1;
+        stored[sec].last = new Date().toLocaleDateString('es-ES');
+        localStorage.setItem(storageKey, JSON.stringify(stored));
+        renderSectionChooser();
+      } catch(e) {}
+      showStartScreen();
+    }
+
+    function finishSectionEarly() {
+      completeSection();
+    }
+
+    function resetQuiz() {
+      stopTimer();
+      quizState.totalScore = 0;
+      quizState.completedSections = 0;
+      quizState.sectionResults = {};
+      quizState.currentSection = null;
+      quizState.currentIndex = 0;
+      quizState.currentSectionScore = 0;
+      quizState.sectionWrong = 0;
+      quizState.questionChecked = false;
+      document.getElementById('next-button').classList.remove('hidden');
+      document.getElementById('finish-button').classList.add('hidden');
+      showStartScreen();
+      updateStatus();
+    }
+
+    function renderSectionChooser() {
+      const chooser = document.getElementById('section-chooser');
+      chooser.innerHTML = '';
+      let storedData = {};
+      try {
+        const storageKey = 'noelia_' + location.pathname.replace(/.*\//, '').replace('.html', '');
+        storedData = JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch(e) {}
+      Object.keys(exerciseSections).forEach((key) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'section-card';
+        card.textContent = exerciseSections[key].label;
+        if (storedData[key]) {
+          const info = document.createElement('small');
+          info.style.cssText = 'display:block;font-size:0.75em;opacity:0.8;margin-top:4px;';
+          info.textContent = `Mejor: ${storedData[key].best} pts · ${storedData[key].attempts} vez${storedData[key].attempts !== 1 ? 'ces' : ''}`;
+          card.appendChild(info);
+        }
+        card.addEventListener('click', () => startSection(key));
+        chooser.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderSectionChooser();
+      document.getElementById('reset-quiz').addEventListener('click', resetQuiz);
+      document.getElementById('next-button').addEventListener('click', evaluateAnswer);
+      document.getElementById('finish-button').addEventListener('click', finishSectionEarly);
+      document.getElementById('choose-another').addEventListener('click', showStartScreen);
+    });
+  </script>
+</body>
+</html>
